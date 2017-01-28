@@ -1,9 +1,9 @@
-package testsEval;
+package eval;
 
-import search.*;
 import definition.*;
+import search.Generate;
 
-public class TestsEval {
+public class Eval {
 	
 	
 	
@@ -44,16 +44,16 @@ public class TestsEval {
 	
 	public static void resolutionPb(int maxVal){
 		Csp csp = generateQuestion1(maxVal);
-		GenerateAndTest.resolutions(csp, 14, maxVal);
+		Generate.allSearchCases(csp,14, maxVal);
 	}
 
 	
 	public static void testsQuestion1(){
-		TestsEval.resolutionPb(3);
-		TestsEval.resolutionPb(4);
-		TestsEval.resolutionPb(5); //J'obtiens 107 solutions.
-		TestsEval.resolutionPb(6); //1468 solutions.
-		TestsEval.resolutionPb(7); // 11024 solutions.
+		Eval.resolutionPb(3);
+		Eval.resolutionPb(4);
+		Eval.resolutionPb(5); //J'obtiens 107 solutions.
+		Eval.resolutionPb(6); //1468 solutions.
+		Eval.resolutionPb(7); // 11024 solutions.
 	}
 	
 	
@@ -91,14 +91,14 @@ public class TestsEval {
 	
 	public static void circuitsInferieurs1(int nb){
 		Csp csp = generateQ21(nb);
-		GenerateAndTest.resolutions(csp, nb, 10);
+		Generate.allSearchCases(csp, nb, 10);
 	}
 	
 	public static void testsQuestion21(){
-		circuitsInferieurs1(10); //solutions trouvées en 0.018s.
-		circuitsInferieurs1(100); //solutions trouvées en 0.038s.
-		circuitsInferieurs1(1000); //solutions trouvées en 1,29s.
-		circuitsInferieurs1(10000); //solutions trouvées en 2 min 09s.
+		circuitsInferieurs1(10); //solutions trouvï¿½es en 0.018s.
+		circuitsInferieurs1(100); //solutions trouvï¿½es en 0.038s.
+		circuitsInferieurs1(1000); //solutions trouvï¿½es en 1,29s.
+		circuitsInferieurs1(10000); //solutions trouvï¿½es en 2 min 09s.
 	}
 	
 	public static Csp generateQ22(int nb){
@@ -131,7 +131,7 @@ public class TestsEval {
 	
 	public static void circuitsInferieurs2(int nb){
 		Csp csp = generateQ22(nb);
-		GenerateAndTest.resolutions(csp, nb, 10);
+		Generate.allSearchCases(csp, nb, 10);
 	}
 
 	public static void testsQuestion22(){
@@ -158,6 +158,6 @@ public class TestsEval {
 	
 	public static void testsQuestion3(){
 		Csp csp = generateQ3();
-		GenerateAndTest.resolutions(csp, 3, 10);
+		Generate.allSearchCases(csp, 3, 10);
 	}
 }

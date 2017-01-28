@@ -1,5 +1,7 @@
 package search;
 
+import definition.Variable;
+
 import java.util.ArrayList;
 
 public class SearchResult {
@@ -7,14 +9,14 @@ public class SearchResult {
 	private long time; 
 	private int nodes;
 	private int nbSols;
-	private ArrayList<String> solutions;
+	private ArrayList<Solution> solutions;
 	
 	public SearchResult (String name){
 		functionName = name;
 		time = 0; 
 		nodes = 0;
 		nbSols = 0;
-		solutions = new ArrayList<String>();
+		solutions = new ArrayList<Solution>();
 	}
 	
 	public SearchResult (SearchResult tr){
@@ -22,7 +24,7 @@ public class SearchResult {
 		time = tr.getTime();
 		nodes = tr.getNodes();	
 		nbSols = tr.getNbSols();	
-		solutions = new ArrayList<String>(tr.getSols());
+		solutions = new ArrayList<Solution>(tr.getSols());
 	}
 	
 	public String getName(){
@@ -41,7 +43,7 @@ public class SearchResult {
 		return nbSols;
 	}
 	
-	public ArrayList<String> getSols(){
+	public ArrayList<Solution> getSols(){
 		return solutions;
 	}
 	
@@ -49,7 +51,7 @@ public class SearchResult {
 		nodes += 1;
 	}
 	
-	public void addSol(String sol){
+	public void addSol(Solution sol){
 		solutions.add(sol);
 		nbSols += 1;
 	}
@@ -65,12 +67,19 @@ public class SearchResult {
 	
 	public String data(){
 		return "Function name : " + functionName + '\n'
-				+ "Elapsed time : " + Tools.convertFromNano(time) + '\n' 
+				+ "Elapsed time : " + Tools.convertFromNano(time) + '\n'
 				+ "Explored nodes : " + nodes + '\n'
 				+ "Number of solutions : " + nbSols ;
 	}
 	
 	public String toString(){
 		return data() + '\n' + solutions.toString();
+	}
+
+	public int[][] serializedSolutions() {
+		int nbSolutions = solutions.size();
+		int[][] rep = new int[nbSolutions][];
+		for (int i=0; i<nbSolutions; i++) rep[i] = solutions.get(i).serialize();
+		return rep;
 	}
 }

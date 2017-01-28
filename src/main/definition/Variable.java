@@ -2,9 +2,9 @@ package definition;
 
 public class Variable {
 
-    String name; // nom de la variable
-    int idx; // identifiant unique
-    Domain dom; // le domaine associe
+    private String name; // nom de la variable
+    private int idx; // identifiant unique
+    private Domain dom; // le domaine associe
 
     // construit une variable "name" definie entre les valeurs min et max (incluses)
     public Variable(String name, int idx, int min, int max) {

@@ -9,9 +9,9 @@ public class ConstraintDiff extends Constraint {
 	
 	@Override
 	public boolean isSatisfied() {
-		Variable [] vars = getVars(); 
-		if (areInstanciated()) return (vars[0].getValue() != vars[1].getValue());
-		return true; 
+		Variable [] vars = getVars();
+		if (areInstanciated()) return vars[0].getValue() != vars[1].getValue();
+		return true;
 	}
 
 	@Override

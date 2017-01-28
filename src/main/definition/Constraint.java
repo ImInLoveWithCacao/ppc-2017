@@ -15,7 +15,6 @@ public abstract class Constraint {
 	}
 	
 	/**
-	 * 
 	 * @return vrai si toutes les variables de la contrainte sont instanci�es. 
 	 */
 	public boolean areInstanciated(){
@@ -46,5 +45,4 @@ public abstract class Constraint {
 	public abstract boolean[] filter();
 	
 	public abstract String toString();
-
 }

@@ -113,13 +113,13 @@ public class Csp {
 			int len = filter.length;
 			if (filter[0]) {
 				rep[0] = false;
-				for (int i = 1; i < len; i++)
-					if (filter[i])
-						rep[c.getVars()[i - 1].getInd() + 1] = true;
-				return rep;
+                for (int i = 1; i < len; i++)
+                    if (filter[i])
+                        rep[c.getVars()[i - 1].getInd() + 1] = true;
+                return rep;
             } else
                 for (int i = 1; i < len; i++)
-					if (filter[i]) {
+                    if (filter[i]) {
 						Variable vi = c.getVars()[i - 1];
 						rep[vi.getInd() + 1] = true;
                         ArrayList<Constraint> cons1 = getConstraintsAsArrayList(vi);

@@ -78,8 +78,10 @@ public class Variable {
 
     // teste l'égalité des identifiants
     public boolean equals(Object o) {
-        return ((o instanceof Variable) && (((Variable) o).getInd() == getInd()) 
-        		&& (((Variable) o).getName() == getName()));
+        return ((o instanceof Variable)
+                && ((Variable) o).getInd() == getInd()
+                && ((Variable) o).getName().equals(getName()))
+                && ((Variable) o).getDomain().equals(getDomain());
     }
 
     public String toString() {

@@ -72,4 +72,10 @@ public class DomainBitSet implements Domain {
 		values.set(v);
 	}
 
+    public boolean equals(Object o) {
+        return (o instanceof Domain)
+                && ((Domain) o).firstValue() == firstValue()
+                && ((Domain) o).lastValue() == lastValue();
+    }
+
 }

@@ -16,7 +16,7 @@ public abstract class Constraint {
 	
 	/**
 	 * 
-	 * @return vrai si toutes les variables de la contrainte sont instanciées. 
+	 * @return vrai si toutes les variables de la contrainte sont instanciï¿½es. 
 	 */
 	public boolean areInstanciated(){
 		for (Variable v : getVars()) 
@@ -37,12 +37,12 @@ public abstract class Constraint {
 	public abstract boolean isNecessary();
 	
 	/**
-	 * Modifie les domaines des variables de sorte à enlever les valeurs ne pouvant satisfaire
-	 * la contrainte
-	 * @return Un array de trois boolean. Le premier vaut true si un domaine a été vidé,
-	 * le deuxième vaut true si le domaine de la première variable a changé, le troisième 
-	 * vaut true si le domaine de la seconde variable a changé. 
-	 */
+     * Modifie les domaines des variables de sorte Ã  enlever les valeurs ne pouvant satisfaire
+     * la contrainte
+     * @return Un array de trois boolean. Le premier vaut true si un domaine a Ã©tÃ© vidÃ©,
+     * le deuxiÃ©me vaut true si le domaine de la premiÃ©re variable a changÃ©, le troisiÃ©me
+     * vaut true si le domaine de la seconde variable a changÃ©.
+     */
 	public abstract boolean[] filter();
 	
 	public abstract String toString();

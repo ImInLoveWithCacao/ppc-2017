@@ -1,17 +1,13 @@
 package definition;
 
+import search.Solution;
+import search.Tools;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import search.SearchResult;
-import search.Solution;
-import search.Tools;
 
-/**
- * Created by IntelliJ IDEA.
- * User: xlorca
- */
 public class Csp {
 
 	private Variable[] vars; // l'ensemble des variables du CSP. Note: les domaines sont connus au travers des variables
@@ -65,21 +61,20 @@ public class Csp {
 
 	/**
 	 * @param var
-	 * @return un array contenant les constraintes du Csp concern�es par var.
-	 */
-	public Constraint[] getConstraints(Variable var) {
-		return Tools.toArray(getConstraints1(var));
-	}
+     * @return un array contenant les constraintes du Csp concernées par var.
+     */
+    public Constraint[] getConstraintsAsArray(Variable var) {
+        return Tools.toArray(getConstraintsAsArrayList(var));
+    }
 
-	public ArrayList<Constraint> getConstraints1(Variable var) {
-		ArrayList<Constraint> rep = new ArrayList<Constraint>();
+    public ArrayList<Constraint> getConstraintsAsArrayList(Variable var) {
+        ArrayList<Constraint> rep = new ArrayList<Constraint>();
 		for (Constraint c : getConstraints()) {
 			Variable[] vars = c.getVars();
 			for (Variable v : vars) if (v.equals(var)) rep.add(c);
 		}
 		return rep;
 	}
-
 
 	public boolean satisfied(Constraint[] cons) {
 		for (Constraint c : cons)
@@ -96,23 +91,23 @@ public class Csp {
 	}
 
 	/**
-	 * Lance le filtrage du Csp avec pour point de d�part la variable var. Et effectue la
-	 * propagation � travers les contraintes qui concernet les variables dont le domaine
-	 * a �t� r�duit par un filtrage.
-	 *
-	 * @param var La variable qui vient d'�tre instanci�e.
-	 * @return un tableau de getNbVars() + 1 bool�ens. Le premier vaut false si le domaine
-	 * de l'une des variables a �t� vid�. Les suivants d'indice i+1 valent true si le domaine
-	 * de la i�me variable a chang�.
-	 */
+     * Lance le filtrage du Csp avec pour point de départ la variable var. Et effectue la
+     * propagation à travers les contraintes qui concernet les variables dont le domaine
+     * a été réduit par un filtrage.
+     *
+     * @param var La variable qui vient d'être instanciée.
+     * @return un tableau de getNbVars() + 1 booléens. Le premier vaut false si le domaine
+     * de l'une des variables a été vidé. Les suivants d'indice i+1 valent true si le domaine
+     * de la ième variable a changé.
+     */
 	public boolean[] propagate(Variable var) {
 		int nb = getNbVars();
 		boolean[] rep = new boolean[nb + 1];
 		rep[0] = true;
 		for (int i = 1; i < nb + 1; i++) rep[i] = false;
 		Queue<Constraint> queue = new LinkedList<Constraint>();
-		queue.addAll(getConstraints1(var));
-		while (!queue.isEmpty()) {
+        queue.addAll(getConstraintsAsArrayList(var));
+        while (!queue.isEmpty()) {
 			Constraint c = queue.poll();
 			boolean[] filter = c.filter();
 			int len = filter.length;
@@ -122,13 +117,13 @@ public class Csp {
 					if (filter[i])
 						rep[c.getVars()[i - 1].getInd() + 1] = true;
 				return rep;
-			} else
-				for (int i = 1; i < len; i++)
+            } else
+                for (int i = 1; i < len; i++)
 					if (filter[i]) {
 						Variable vi = c.getVars()[i - 1];
 						rep[vi.getInd() + 1] = true;
-						ArrayList<Constraint> cons1 = getConstraints1(vi);
-						for (Constraint c1 : cons1)
+                        ArrayList<Constraint> cons1 = getConstraintsAsArrayList(vi);
+                        for (Constraint c1 : cons1)
 							if (!c1.equals(c) && !queue.contains(c1)) queue.add(c1);
 					}
 		}

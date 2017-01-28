@@ -81,7 +81,7 @@ public class Solver {
                                           boolean test, int heuristic, Csp csp, SearchResult result){
 
         SearchResult res = new SearchResult(result);
-        Constraint[] cons = csp.getConstraints(var);
+        Constraint[] cons = csp.getConstraintsAsArray(var);
         switch(level) {
             case 1  : test = test && csp.satisfied(cons); break;
             case 2  : test = test && csp.necessary(cons); break;

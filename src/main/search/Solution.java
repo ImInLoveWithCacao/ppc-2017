@@ -6,7 +6,9 @@ public class Solution {
     private Variable[] variables;
 
     public Solution(Variable[] vars) {
-        this.variables = vars;
+        int nbVars = vars.length;
+        this.variables = new Variable[nbVars];
+        for (int i=0; i<nbVars; i++) this.variables[i] = new Variable(vars[i]);
     }
 
     public int[] serialize() {

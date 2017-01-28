@@ -11,7 +11,7 @@ public class Generate {
     public static final int RANDOM = 0;
 
 
-    public static Csp generate31(){
+    private static Csp generate31(){
         Variable x0 = new Variable ("x0", 0, 0, 2);
         Variable x1 = new Variable ("x1", 1, 0, 2);
         Variable x2 = new Variable ("x2", 2, 0, 2);
@@ -42,9 +42,9 @@ public class Generate {
      * @param nbCons nombre de contraintes
      * @param minD minimum des domaines des variables
      * @param maxD maximum des domaines des variables
-     * @returnun Csp avec les paramètres souhaités
+     * @return un Csp avec les paramètres souhaités
      */
-    public static Csp generateRandom(int nbVar, int nbCons, int minD, int maxD){
+    private static Csp generateRandom(int nbVar, int nbCons, int minD, int maxD){
         Variable[] vars = new Variable[nbVar];
         for (int i=0; i<nbVar; i++){
             int[] dom = Tools.randomTwo(minD, maxD);
@@ -72,7 +72,7 @@ public class Generate {
         return new Csp(vars, cons);
     }
 
-    public static void test(){
+    private static void test(){
         int n = 3;
         Csp csp = generateRandom(n, n-2, 0, n);//generateMonteeEnCharge(n);//generate31();//generate53();//
         System.out.println("---------------PROLEME : \n" +  csp.toString());
@@ -90,8 +90,7 @@ public class Generate {
                 j = i-l;
                 filter = true;
             }
-            result = new SearchResult (names[j] + " n = " + n + ", maxVal = " + maxVal
-                    + ", filter : " + filter);
+            result = new SearchResult (names[j] + " n = " + n + ", filter : " + filter);
             result.timerStart();
             result = Solver.search(j, filter, 0, csp, result);
             result.timerEnd();

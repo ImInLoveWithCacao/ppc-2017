@@ -3,6 +3,7 @@ package search;
 import definition.*;
 
 public class Generate {
+    // User variables
     public static final int BRUTEFORCE = 0;
     public static final int BACKTRACK = 1;
     public static final int BACKTRACK2 = 2;
@@ -76,35 +77,27 @@ public class Generate {
         int n = 3;
         Csp csp = generateRandom(n, n-2, 0, n);//generateMonteeEnCharge(n);//generate31();//generate53();//
         System.out.println("---------------PROLEME : \n" +  csp.toString());
-        allSearchCases(csp, n, 10);
+        allSearchCases(csp, n);
     }
 
-    public static void allSearchCases(Csp csp, int n, int maxVal) {
+    public static void allSearchCases(Csp csp, int n) {
         String[] names = {"BruteForce", "BackTrack", "BackTrack2"};
         int l = names.length;
+        Solver solver;
         SearchResult result;
         boolean filter = false;
-        for (int i = l+2; i<2*l; i++){
+        for (int i = 0; i < 2 * l; i++) {
             int j = i;
             if (i>=l){
                 j = i-l;
                 filter = true;
             }
-            result = new SearchResult (names[j] + " n = " + n + ", filter : " + filter);
-            result.timerStart();
-            result = Solver.search(j, filter, 0, csp, result);
-            result.timerEnd();
-            System.out.println(result.data() + "\n\n\n");
+            for (int k = 0; k < 3; k++) {
+                solver = new Solver(names[j] + " n = " + n + "heuristic : " + k + ", filter : " + filter, csp);
+                result = solver.wrapSearch(j, filter, k);
+                System.out.println(result.data() + "\n\n\n");
+            }
         }
-    }
-
-    public static void testFilter(){
-        Csp csp = generate31();
-        System.out.println(csp.toString());
-        Variable var = csp.getVars()[0];
-        var.instantiate(5);
-        csp.propagate(csp.getVars()[0]);
-        System.out.println(csp.solution());
     }
 
     public static void testDomaines1(){

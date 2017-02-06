@@ -4,8 +4,6 @@ import search.Solution;
 import search.Tools;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class Csp {
@@ -17,6 +15,10 @@ public class Csp {
 		this.vars = vars;
 		this.cons = cons;
 	}
+
+    public Csp(Variable[] vars) {
+        this(vars, new Constraint[]{});
+    }
 
 	public Variable[] getVars() {
 		return vars;
@@ -35,6 +37,37 @@ public class Csp {
 		for (Variable v : this.vars) if (!v.isInstantiated()) return v;
 		return null;
 	}
+
+    public Variable smallestVar() {
+        Variable smallest = new Variable("biggest", -1, 0, 99999);
+        for (Variable v : this.vars)
+            if (!v.isInstantiated()
+                    && v.getDomainSize() < smallest.getDomainSize())
+                smallest = v;
+        return smallest;
+    }
+
+
+    public Variable smallestRatio() {
+        Variable smallest = new Variable("biggest", -1, 0, 99999);
+        for (Variable v : this.vars)
+            if (!v.isInstantiated()
+                    && ratio(v) < ratio(smallest))
+                smallest = v;
+        return smallest;
+    }
+
+    public double ratio(Variable var) {
+        return var.getDomainSize() / ((double) getNbConstraints(var));
+    }
+
+
+    public Domain[] cloneDomains() {
+        int nbVars = getNbVars();
+        Domain[] rep = new Domain[nbVars];
+        for (int i = 0; i < nbVars; i++) rep[i] = getVars()[i].getDomain().clone();
+        return rep;
+    }
 
 	/**
 	 * @return true ssi toutes les variables sont instanciees.
@@ -58,6 +91,10 @@ public class Csp {
 		Variable[] rep = (Variable[]) vars.toArray();
 		return rep;
 	}
+
+    public int getNbConstraints(Variable var) {
+        return getConstraintsAsArray(var).length;
+    }
 
 	/**
 	 * @param var
@@ -88,46 +125,6 @@ public class Csp {
 			if (!c.isNecessary())
 				return false;
 		return true;
-	}
-
-	/**
-     * Lance le filtrage du Csp avec pour point de départ la variable var. Et effectue la
-     * propagation à travers les contraintes qui concernet les variables dont le domaine
-     * a été réduit par un filtrage.
-     *
-     * @param var La variable qui vient d'être instanciée.
-     * @return un tableau de getNbVars() + 1 booléens. Le premier vaut false si le domaine
-     * de l'une des variables a été vidé. Les suivants d'indice i+1 valent true si le domaine
-     * de la ième variable a changé.
-     */
-	public boolean[] propagate(Variable var) {
-		int nb = getNbVars();
-		boolean[] rep = new boolean[nb + 1];
-		rep[0] = true;
-		for (int i = 1; i < nb + 1; i++) rep[i] = false;
-		Queue<Constraint> queue = new LinkedList<Constraint>();
-        queue.addAll(getConstraintsAsArrayList(var));
-        while (!queue.isEmpty()) {
-			Constraint c = queue.poll();
-			boolean[] filter = c.filter();
-			int len = filter.length;
-			if (filter[0]) {
-				rep[0] = false;
-                for (int i = 1; i < len; i++)
-                    if (filter[i])
-                        rep[c.getVars()[i - 1].getInd() + 1] = true;
-                return rep;
-            } else
-                for (int i = 1; i < len; i++)
-                    if (filter[i]) {
-						Variable vi = c.getVars()[i - 1];
-						rep[vi.getInd() + 1] = true;
-                        ArrayList<Constraint> cons1 = getConstraintsAsArrayList(vi);
-                        for (Constraint c1 : cons1)
-							if (!c1.equals(c) && !queue.contains(c1)) queue.add(c1);
-					}
-		}
-		return rep;
 	}
 
 	public String toString() {

@@ -47,7 +47,7 @@ public class Variable {
 
     // retourne le nombre de valeurs dans le domaine de la variable
     public int getDomainSize() {
-        return this.dom.size();
+        return getDomain().size();
     }
 
     // supprime la valeur v du domaine de la variable

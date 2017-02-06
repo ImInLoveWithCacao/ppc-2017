@@ -1,5 +1,7 @@
 package definition;
 
+import java.util.Arrays;
+
 public class ConstraintInfEg extends Constraint {
 
 	public ConstraintInfEg (Variable v1, Variable v2){
@@ -41,12 +43,12 @@ public class ConstraintInfEg extends Constraint {
 	}
 	
 	public boolean equals (Object o){
-		return (o instanceof ConstraintInfEg) && ((ConstraintInfEg)o).getVars().equals(getVars());
-	}
+        return (o instanceof ConstraintInfEg)
+                && (Arrays.equals(((ConstraintInfEg) o).getVars(), getVars()));
+    }
 	
 	public String toString(){
 		Variable[] vars = getVars();
 		return (vars[0].getName() + " <= " + vars[1].getName());
 	}
-
 }

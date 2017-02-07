@@ -94,8 +94,8 @@ public class Generate {
             }
             for (int k = 0; k < 3; k++) {
                 solver = new Solver(names[j] + " n = " + n + "heuristic : " + k + ", filter : " + filter, csp);
-                result = solver.wrapSearch(j, filter, k);
-                System.out.println(result.data() + "\n\n\n");
+                //result = solver.searchWithTimer(j, filter, k);
+                // System.out.println(result.data() + "\n\n\n");
             }
         }
     }

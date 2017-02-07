@@ -113,16 +113,18 @@ public class Csp {
 		return rep;
 	}
 
-	public boolean satisfied(Constraint[] cons) {
-		for (Constraint c : cons)
+    public boolean satisfied(Variable node) {
+        Constraint[] cons = getConstraintsAsArray(node);
+        for (Constraint c : cons)
 			if (c.areInstanciated() && !c.isSatisfied())
 				return false;
 		return true;
 	}
 
-	public boolean necessary(Constraint[] cons) {
-		for (Constraint c : cons)
-			if (!c.isNecessary())
+    public boolean necessary(Variable node) {
+        Constraint[] cons = getConstraintsAsArray(node);
+        for (Constraint c : cons)
+            if (!c.isNecessary())
 				return false;
 		return true;
 	}

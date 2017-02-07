@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SolverTest {
     private final int[][] noConstraintsSolution = new int[][]{{0, 0}, {0, 1}, {1, 0}, {1, 1}};
     private final int[][] simpleTestSolutions = new int[][]{{0, 1}};
-    private final boolean[] propTest = new boolean[]{true, true, true, false};
 
 
     @Test
@@ -23,7 +22,7 @@ class SolverTest {
                         new Variable("x2", 1, 1, 0)
                 });
 
-        SearchResult res = empty.searchBasic();
+        SearchResult res = empty.bruteForce();
         assertEquals(res.getNbSols(), 0);
     }
 
@@ -35,7 +34,7 @@ class SolverTest {
                         new Variable("x1", 1, 0, 1)
                 });
 
-        SearchResult res = solver.searchBasic();
+        SearchResult res = solver.bruteForce();
         int[][] sols = res.serializedSolutions();
         int nbSols = sols.length;
         for (int i = 0; i < nbSols; i++) assertArrayEquals(sols[i], noConstraintsSolution[i]);
@@ -50,30 +49,11 @@ class SolverTest {
                 new Variable[]{x0, x1},
                 new Constraint[]{new ConstraintInf(x0, x1)});
 
-        SearchResult res = simpleProblem.searchBasic();
+        SearchResult res = simpleProblem.bruteForce();
         int[][] sols = res.serializedSolutions();
         int nbSols = sols.length;
         assertEquals(nbSols, 1);
         assertArrayEquals(sols[0], simpleTestSolutions[0]);
-    }
-
-    @Test
-    void it_propagates_correctly() {
-        Variable x0 = new Variable("x0", 0, 0, 2);
-        Variable x1 = new Variable("x1", 1, 0, 2);
-        Variable x2 = new Variable("x2", 2, 2, 2);
-
-        Solver solver = new Solver(
-                new Variable[]{x0, x1, x2},
-                new Constraint[]{
-                        new ConstraintInf(x0, x1),
-                        new ConstraintInf(x1, x2)
-                });
-
-        boolean[] prop = solver.propagate(x2);
-        assertArrayEquals(propTest, prop);
-        assertEquals(1, x1.getDomain().lastValue());
-        assertEquals(0, x0.getDomain().lastValue());
     }
 
     @Test

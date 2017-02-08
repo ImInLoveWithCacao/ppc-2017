@@ -18,15 +18,17 @@ class PropagatorTest {
         Variable x1 = new Variable("x1", 1, 0, 2);
         Variable x2 = new Variable("x2", 2, 2, 2);
 
-        Csp csp = new Csp(
-                new Variable[]{x0, x1, x2},
-                new Constraint[]{
-                        new ConstraintInf(x0, x1),
-                        new ConstraintInf(x1, x2)
-                });
+        Propagator p = new Propagator(
+                                             new Csp(
+                                                            new Variable[]{x0, x1, x2},
+                                                            new Constraint[]{
+                                                                    new ConstraintInf(x0, x1),
+                                                                    new ConstraintInf(x1, x2)
+                                                            }
+                                             ), x2);
 
-        boolean[] prop = (new Propagator(csp, x2)).lauchPropagation();
-        assertArrayEquals(propTest, prop);
+        p.lauchPropagation();
+        assertArrayEquals(propTest, p.changedDomains());
         assertEquals(1, x1.getDomain().lastValue());
         assertEquals(0, x0.getDomain().lastValue());
     }

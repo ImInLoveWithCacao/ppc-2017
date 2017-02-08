@@ -138,13 +138,13 @@ public class Csp {
 
 	public String toString() {
 		String s = "---Variables : \n";
-		for (Variable v : this.vars) s += v + "\n";
-		s += "---Contraintes \n";
-		for (Constraint c : this.cons) s += c + "\n";
-		return s;
+        for (Variable v : getVars()) s += v + "\n";
+        s += "---Contraintes \n";
+        for (Constraint c : getConstraints()) s += c + "\n";
+        return s;
 	}
 
 	public Solution solution() {
-		return new Solution(this.vars);
-	}
+        return new Solution(getVars());
+    }
 }

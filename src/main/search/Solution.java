@@ -11,7 +11,7 @@ public class Solution {
         for (int i=0; i<nbVars; i++) this.variables[i] = new Variable(vars[i]);
     }
 
-    public int[] serialize() {
+    int[] serialize() {
         int nbVars = variables.length;
         int[] rep = new int[nbVars];
         for (int i=0; i<nbVars; i++) rep[i] = variables[i].getValue();

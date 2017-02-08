@@ -144,9 +144,9 @@ class Solver {
      */
     private void coreWithFilter() {
         Propagator p = new Propagator(csp, currentNode);
-        boolean[] propagation = p.lauchPropagation(); // Propagation à partir de var.
+        p.lauchPropagation(); // Propagation à partir de var.
 
-        if (!propagation[0]) coreSearch(); // Contient l'appel récursif à search().
+        if (p.areArcsConsistent()) coreSearch(); // Contient l'appel récursif à search().
         p.restoreDomains();
     }
 
@@ -175,12 +175,12 @@ class Solver {
     }
 
     /**
-     * Appelée quand toutes les cariables sont instanciées.
+     * Appelée quand toutes les Variables sont instanciées.
      */
     private void checkSolution() {
         boolean sol = true;
         if (level == 0) sol = csp.hasSolution();
-        if (sol) result.addSol(csp.solution()); // Ajout d'une solution.
+        if (sol) result.addSol(csp.solution());
     }
 
 }

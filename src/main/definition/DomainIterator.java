@@ -19,7 +19,7 @@ public class DomainIterator implements Iterator<Integer> {
 	@Override
 	public Integer next() {
 		int j = d.nextSetBit(i);
-		this.i = j+1;
+		i = j + 1;
 		return j;
 	}
 

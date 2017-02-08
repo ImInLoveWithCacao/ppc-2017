@@ -12,15 +12,20 @@ public class Generate {
     public static final int RANDOM = 0;
 
 
-    private static Csp generate31(){
-        Variable x0 = new Variable ("x0", 0, 0, 2);
-        Variable x1 = new Variable ("x1", 1, 0, 2);
-        Variable x2 = new Variable ("x2", 2, 0, 2);
-        Constraint c1 = new ConstraintInf(x0, x2);
+    private static Variable[] generateRandomVars(int nb, int minDom, int maxDom) {
+        Variable[] res = new Variable[nb];
+        for (int i = 0; i < nb; i++) {
+            int[] dom = Tools.randomTwo(minDom, maxDom);
+            res[i] = new Variable("x" + i, i, dom[0], dom[1]);
+        }
+        return res;
+    }
 
-        Variable[] vars = {x0, x1, x2};
-        Constraint[] cons = {c1};
-        return new Csp (vars, cons);
+
+    private static Csp generate31(){
+        Variable[] vars = generateRandomVars(3, 0, 2);
+        Constraint c1 = new ConstraintInf(vars[0], vars[2]);
+        return new Csp(vars, new Constraint[]{c1});
     }
 
     public static Csp generate53(){
@@ -98,17 +103,6 @@ public class Generate {
                 // System.out.println(result.data() + "\n\n\n");
             }
         }
-    }
-
-    public static void testDomaines1(){
-        Domain d1 = new DomainBitSet(0, 2);
-        Domain d2 = d1.clone();
-        d2.remove(1);
-    }
-
-    public static void testDomainIterator(){
-        Domain d1 = new DomainBitSet(0, 2);
-        for (Integer i : d1) System.out.println(i);
     }
 
     public static void main (String[] args) {

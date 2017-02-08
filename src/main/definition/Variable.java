@@ -2,11 +2,24 @@ package definition;
 
 public class Variable {
 
-    private String name; // nom de la variable
-    private int idx; // identifiant unique
-    private Domain dom; // le domaine associe
+    /**
+     * Nom de la variable.
+     */
+    private String name;
 
-    // construit une variable "name" definie entre les valeurs min et max (incluses)
+    /**
+     * Identifiant unique.
+     */
+    private int idx;
+
+    /**
+     * Le domaine associe.
+     */
+    private Domain dom;
+
+    /**
+     * Construit une variable "name" definie entre les valeurs min et max (incluses).
+     */
     public Variable(String name, int idx, int min, int max) {
         this.name = name;
         this.idx = idx;
@@ -22,9 +35,9 @@ public class Variable {
     public int getInd(){
     	return idx;
     }
-    
-    public String getName(){
-    	return name;
+
+    String getName() {
+        return name;
     }
 
     public Domain getDomain() {
@@ -35,48 +48,66 @@ public class Variable {
         this.dom = d;
     }
 
-    // retourne vrai ssi la variable est instanciee
-    public boolean isInstantiated() {
+    /**
+     * @return true ssi la variable est instanciée.
+     */
+    boolean isInstantiated() {
         return this.dom.size() == 1;
     }
 
-    // retourne vrai ssi le domaine de la variable contient la valeur v
+    /**
+     * @return true ssi le domaine de la variable contient la valeur v.
+     */
     public boolean canBeInstantiatedTo(int v) {
         return this.dom.contains(v);
     }
 
-    // retourne le nombre de valeurs dans le domaine de la variable
-    public int getDomainSize() {
+    /**
+     * @return le nombre de valeurs dans le domaine de la variable.
+     */
+    int getDomainSize() {
         return getDomain().size();
     }
 
-    // supprime la valeur v du domaine de la variable
+    /**
+     * supprime la valeur v du domaine de la variable.
+     */
     public void remValue(int v) {
         this.dom.remove(v);
     }
 
-    // instantie la variable a la valeur v
+    /**
+     * instantie la variable a la valeur v.
+     */
     public void instantiate(int v) {
         this.dom.fix(v);
     }
 
-    // retourne la plus petite valeur du domaine
-    public int getInf() {
+    /**
+     * @return la plus petite valeur du domaine.
+     */
+    int getInf() {
         return getDomain().firstValue();
     }
 
-    // retourne la plus grande valeur du domaine
-    public int getSup() {
+    /**
+     * @return la plus grande valeur du domaine.
+     */
+    int getSup() {
         return getDomain().lastValue();
     }
 
-    // retourne la valeur affectee a la variable ssi la variable est effectivement instanciee, sinon -1
+    /**
+     * @return la valeur affectee a la variable ssi la variable est effectivement instanciee, sinon -1.
+     */
     public int getValue() {
     	if (isInstantiated()) return getInf();
     	else return -1;
     }
 
-    // teste l'égalité des identifiants
+    /**
+     * @return égalité des identifiants
+     */
     public boolean equals(Object o) {
         return ((o instanceof Variable)
                 && ((Variable) o).getInd() == getInd()

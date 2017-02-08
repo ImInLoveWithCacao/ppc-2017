@@ -80,7 +80,7 @@ class Propagator {
         prepareDomains();
         activeConstraints.addAll(csp.getConstraintsAsArrayList(currentNode));
 
-        while (canStillPropagate() && !emptyDomain) propagate();
+        while (canStillPropagate() && !emptyDomain) startPropagation();
         return changedDomains;
     }
 
@@ -91,23 +91,24 @@ class Propagator {
         for (int i = 0; i < nb; i++) changedDomains[i] = false;
     }
 
-    private void propagate() {
+    private void startPropagation() {
         setCurrentConstraint(activeConstraints.poll());
         setCurrentFilter(currentConstraint.filter());
+
         if (currentFilter[0]) emptyDomain = true;
-        else startPropagation();
+        else propagate();
     }
 
-    private void startPropagation() {
-        boolean[] copy = copyDomains();
+    private void propagate() {
         int len = currentFilter.length;
         for (int i = 1; i < len; i++)
-            if (currentFilter[i]) {
-                Variable vi = currentConstraint.getVars()[i - 1];
-                copy[vi.getInd()] = true;
-                addActivatedConstraints(vi);
-            }
-        setChangedDomains(copy);
+            if (currentFilter[i])
+                activateVariable(currentConstraint.getVars()[i - 1]);
+    }
+
+    private void activateVariable(Variable var) {
+        changedDomains[var.getInd()] = true;
+        addActivatedConstraints(var);
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
@@ -120,6 +121,7 @@ class Propagator {
     void restoreDomains() {
         int nbVars = csp.getNbVars();
         for (int i = 0; i < nbVars; i++)
-            if (changedDomains[i]) csp.getVars()[i].setDomain(savedDomains[i]);
+            if (changedDomains[i])
+                csp.getVars()[i].setDomain(savedDomains[i]);
     }
 }

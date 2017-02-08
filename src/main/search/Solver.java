@@ -26,7 +26,7 @@ class Solver {
     private int heuristic;
 
 
-    // ---------------------------------------------- API --------------------------------------------------------------
+    // ---------------------------------------------- Constructors -----------------------------------------------------
 
     Solver(String name, Csp csp) {
         this.csp = csp;
@@ -36,8 +36,6 @@ class Solver {
     Solver(Csp csp) {
         this("search", csp);
     }
-
-    // ---------------------------------------------- Constructors -----------------------------------------------------
 
     Solver(String name, Variable[] vars, Constraint[] cons) {
         this(name, new Csp(vars, cons));
@@ -54,6 +52,9 @@ class Solver {
     Solver(Variable[] vars) {
         this("search", vars);
     }
+
+
+    // ---------------------------------------------- API --------------------------------------------------------------
 
     /**
      * Execute searchWithTimer en mode bruteforce et enregistre les resultats

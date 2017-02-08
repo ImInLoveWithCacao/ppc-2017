@@ -7,9 +7,16 @@ import java.util.ArrayList;
 
 
 public class Csp {
+    /**
+     * L'ensemble des variables du CSP. Note: les domaines sont connus au travers des variables
+     */
+    private Variable[] vars;
 
-	private Variable[] vars; // l'ensemble des variables du CSP. Note: les domaines sont connus au travers des variables
-	private Constraint[] cons; // l'ensemble des contraintes du CSP
+    /**
+     * L'ensemble des contraintes du CSP
+     */
+    private Constraint[] cons;
+
 
 	public Csp(Variable[] vars, Constraint[] cons) {
 		this.vars = vars;
@@ -28,12 +35,14 @@ public class Csp {
 		return getVars().length;
 	}
 
-	public Constraint[] getConstraints() {
-		return this.cons;
+    Constraint[] getConstraints() {
+        return this.cons;
 	}
 
-	// retourne la premiere variable non instanciee du csp
-	public Variable randomVar() {
+    /**
+     * @return la premiere variable non instanciee du csp.
+     */
+    public Variable randomVar() {
 		for (Variable v : this.vars) if (!v.isInstantiated()) return v;
 		return null;
 	}
@@ -57,10 +66,9 @@ public class Csp {
         return smallest;
     }
 
-    public double ratio(Variable var) {
+    private double ratio(Variable var) {
         return var.getDomainSize() / ((double) getNbConstraints(var));
     }
-
 
     public Domain[] cloneDomains() {
         int nbVars = getNbVars();
@@ -92,15 +100,14 @@ public class Csp {
 		return rep;
 	}
 
-    public int getNbConstraints(Variable var) {
+    private int getNbConstraints(Variable var) {
         return getConstraintsAsArray(var).length;
     }
 
 	/**
-	 * @param var
      * @return un array contenant les constraintes du Csp concernées par var.
      */
-    public Constraint[] getConstraintsAsArray(Variable var) {
+    private Constraint[] getConstraintsAsArray(Variable var) {
         return Tools.toArray(getConstraintsAsArrayList(var));
     }
 

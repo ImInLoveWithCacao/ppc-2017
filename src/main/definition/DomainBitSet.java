@@ -4,20 +4,21 @@ import java.util.Iterator;
 
 public class DomainBitSet implements Domain {
 
-	BitSet values; // un bitset represente le domaine (voir api java pour plus d'infos)
+    /**
+     * Un bitset represente le domaine (voir api java pour plus d'infos).
+     */
+    private BitSet values;
 
-	// Construit un domaine dont les valeurs sont comprises entre min et max (inclus)
-	public DomainBitSet(int min, int max) {
-		this.values = new BitSet();
+    /**
+     * Construit un domaine dont les valeurs sont comprises entre min et max (inclus).
+     */
+    DomainBitSet(int min, int max) {
+        this.values = new BitSet();
 		this.values.set(min, max+1);
 	}
-	
-	public DomainBitSet (BitSet set){
-		this.values = set;
-	}
-	
-	public DomainBitSet(DomainBitSet dom) {
-		this.values = (BitSet) dom.values.clone();
+
+    private DomainBitSet(BitSet set) {
+        this.values = set;
 	}
 
 	public DomainBitSet clone() {
@@ -26,20 +27,26 @@ public class DomainBitSet implements Domain {
 		return new DomainBitSet(newB);
 	}
 
-	// retourne la taille du domaine, ie le nombre de valeurs dans le domaine
-	public int size() {
+    /**
+     * @return la taille du domaine, ie le nombre de valeurs dans le domaine.
+     */
+    public int size() {
 		return this.values.cardinality();
 	}
 
-	// retourne la premiere valeur du domaine
-	public int firstValue() {
+    /**
+     * @return la première valeur du domaine
+     */
+    public int firstValue() {
 		return values.nextSetBit(0);
 	}
 
-	// retourne la derniere valeur du domaine
-	public int lastValue() {
-		return values.length()-1;
-	}
+    /**
+     * @return la derniere valeur du domaine
+     */
+    public int lastValue() {
+        return values.length() - 1;
+    }
 
 	public String toString() {
 		return this.values.toString();
@@ -50,8 +57,8 @@ public class DomainBitSet implements Domain {
 	}
 
 	public boolean contains(int v) {
-		return (values.nextSetBit(v) == v);
-	}
+        return values.nextSetBit(v) == v;
+    }
 
 	public boolean remove(int v) {
 		boolean rep = values.get(v);

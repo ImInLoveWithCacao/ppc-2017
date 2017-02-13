@@ -49,6 +49,16 @@ public class SearchResult {
         nbSols += 1;
     }
 
+    int getNbSols() {
+        return nbSols;
+    }
+
+    int[][] serializedSolutions() {
+        int nbSolutions = solutions.size();
+        int[][] rep = new int[nbSolutions][];
+        for (int i = 0; i < nbSolutions; i++) rep[i] = solutions.get(i).serialize();
+        return rep;
+    }
 
     // ------------------------------------- Private -------------------------------------------------------------------
 
@@ -64,9 +74,6 @@ public class SearchResult {
         return nodes;
     }
 
-    private int getNbSols() {
-        return nbSols;
-    }
 
     private ArrayList<Solution> getSols() {
         return solutions;
@@ -77,12 +84,5 @@ public class SearchResult {
 				+ "Elapsed time : " + Tools.convertFromNano(time) + '\n'
 				+ "Explored nodes : " + nodes + '\n'
 				+ "Number of solutions : " + nbSols ;
-	}
-
-    private int[][] serializedSolutions() {
-        int nbSolutions = solutions.size();
-		int[][] rep = new int[nbSolutions][];
-		for (int i=0; i<nbSolutions; i++) rep[i] = solutions.get(i).serialize();
-		return rep;
 	}
 }

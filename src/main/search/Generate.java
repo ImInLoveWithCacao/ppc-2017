@@ -88,7 +88,7 @@ public class Generate {
     public static void allSearchCases(Csp csp, int n) {
         String[] names = {"BruteForce", "BackTrack", "BackTrack2"};
         int l = names.length;
-        Solver solver;
+        BruteForce solver;
         SearchResult result;
         boolean filter = false;
         for (int i = 0; i < 2 * l; i++) {
@@ -98,7 +98,7 @@ public class Generate {
                 filter = true;
             }
             for (int k = 0; k < 3; k++) {
-                solver = new Solver(names[j] + " n = " + n + "heuristic : " + k + ", filter : " + filter, csp);
+                solver = new BruteForce(names[j] + " n = " + n + "heuristic : " + k + ", filter : " + filter, csp);
                 //result = solver.searchWithTimer(j, filter, k);
                 // System.out.println(result.data() + "\n\n\n");
             }

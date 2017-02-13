@@ -1,7 +1,8 @@
 package search;
 
-import java.util.ArrayList;
 import definition.Constraint;
+
+import java.util.ArrayList;
 
 public class Tools {
 
@@ -16,24 +17,18 @@ public class Tools {
 		else return rep;
 	}
 
-	public static Constraint[] removeOne (Constraint[] in, Constraint toRremove){
-		ArrayList<Constraint> outInt = new ArrayList<Constraint>();
-		for (Constraint c : in) if (!c.equals(toRremove)) outInt.add(c);
-		return Tools.toArray(outInt);
-	}
-
 	public static Constraint[] toArray(ArrayList<Constraint> in) {
 		int l = in.size();
 		Constraint[] rep = new Constraint[l];
 		for (int i=0; i<l; i++) rep[i] = in.get(i);
 		return rep;
 	}
-	
-	public static int[][] randomPairs(int nbCons, int nbVars){
-		int[][] rep = new int[nbCons][2];
+
+    static int[][] randomPairs(int nbCons, int nbVars) {
+        int[][] rep = new int[nbCons][2];
 		for (int i=0; i<nbCons; i++){
-			int[] pair = randomTwo (0, nbVars);
-			boolean already = false; 
+            int[] pair = randomTwo(0, nbVars);
+            boolean already = false;
 			for (int j=0; j<i; j++)
 				if (pair[0] == rep[j][0] && pair[1] == rep[j][1]){
 					i--;
@@ -44,13 +39,8 @@ public class Tools {
 		return rep; 
 	}
 
-	public static ArrayList<Constraint> toArrayList(Constraint[] in){
-		ArrayList<Constraint> rep = new ArrayList<Constraint>();
-		return rep;
-	}
-	
-	public static String convertFromNano(long nanotime){
-		String rep = "";
+    static String convertFromNano(long nanotime) {
+        String rep = "";
 		double decimal = nanotime*Math.pow(10, -9);
 		if (decimal >= 1){
 			int nbSec = (int) Math.floor(decimal);
@@ -61,8 +51,8 @@ public class Tools {
 				decimal -= 60*nbMin;
 			}
 		}
-		rep += decimal + " s";;
-		return rep;
-	}
+        rep += decimal + " s";
+        return rep;
+    }
 
 }

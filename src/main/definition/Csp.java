@@ -35,7 +35,7 @@ public class Csp {
 		return getVars().length;
 	}
 
-    Constraint[] getConstraints() {
+    private Constraint[] getConstraints() {
         return this.cons;
 	}
 
@@ -47,7 +47,7 @@ public class Csp {
 		return null;
 	}
 
-    public Variable smallestVar() {
+    public Variable smallestDomain() {
         Variable smallest = new Variable("biggest", -1, 0, 99999);
         for (Variable v : this.vars)
             if (!v.isInstantiated()
@@ -81,13 +81,14 @@ public class Csp {
 	 * @return true ssi toutes les variables sont instanciees.
 	 */
 	public boolean allInstanciated() {
-		for (Variable v : this.vars) if (!v.isInstantiated()) return false;
-		return true;
+        for (Variable v : this.vars)
+            if (!v.isInstantiated()) return false;
+        return true;
 	}
 
 	/**
-	 * @return true vrai l'ensemble des contraintes du CSP est verifi�.
-	 */
+     * @return true vrai l'ensemble des contraintes du CSP est verifié.
+     */
 	public boolean hasSolution() {
 		for (Constraint c : getConstraints()) if (!c.isSatisfied()) return false;
 		return allInstanciated();
@@ -95,10 +96,10 @@ public class Csp {
 
 	public Variable[] instanciated() {
 		ArrayList<Variable> vars = new ArrayList<Variable>();
-		for (Variable v : vars) if (v.isInstantiated()) vars.add(v);
-		Variable[] rep = (Variable[]) vars.toArray();
-		return rep;
-	}
+        for (Variable v : vars)
+            if (v.isInstantiated()) vars.add(v);
+        return (Variable[]) vars.toArray();
+    }
 
     private int getNbConstraints(Variable var) {
         return getConstraintsAsArray(var).length;

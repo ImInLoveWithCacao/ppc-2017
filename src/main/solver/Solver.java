@@ -86,17 +86,26 @@ abstract class Solver {
     }
 
     /**
-     * Choisit la prochaine variable à instancier, sauvegarde son domaine, continue la recherche,
-     * puis restitue son domaine à la variable.
+     * Choisit la prochaine variable à instancier, puis parcourt le domaine de la variable.
      */
     private void fromNewVariable() {
         Variable var = choseNextVar();
+        Domain d = saveAndGoThroughDomain(var);
+        var.setDomain(d);
+    }
+
+    /**
+     * Sauvegarde le domaine de la variable, puis continue la recherche.
+     *
+     * @return le domaine de var avant la suite de la recherche.
+     */
+    private Domain saveAndGoThroughDomain(Variable var) {
         Domain d = var.getDomain().clone();
         for (Integer i : d) {       // Exploration à partir de var.
             setCurrentNode(var, i);
             coreSearch();
         }
-        var.setDomain(d);
+        return d;
     }
 
     /**

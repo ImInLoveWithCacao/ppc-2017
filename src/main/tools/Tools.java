@@ -1,4 +1,4 @@
-package search;
+package tools;
 
 import definition.Constraint;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Tools {
 
-	public static int[] randomTwo (int minD, int maxD){
-		int[] rep = new int[2];
+    static int[] randomTwo(int minD, int maxD) {
+        int[] rep = new int[2];
 		int len = maxD - minD;
 		double rand1 = Math.floor(Math.random()*len);
 		double rand2 = Math.floor(Math.random()*len);

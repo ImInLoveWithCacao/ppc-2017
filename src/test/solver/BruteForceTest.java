@@ -1,10 +1,11 @@
-package search;
+package solver;
 
 import definition.Constraint;
 import definition.ConstraintInf;
 import definition.Csp;
 import definition.Variable;
 import org.junit.jupiter.api.Test;
+import tools.SearchResult;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

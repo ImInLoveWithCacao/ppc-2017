@@ -1,7 +1,7 @@
 package definition;
 
-import search.Solution;
-import search.Tools;
+import tools.Solution;
+import tools.Tools;
 
 import java.util.ArrayList;
 

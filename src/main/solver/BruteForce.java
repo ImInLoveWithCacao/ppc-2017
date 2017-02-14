@@ -1,10 +1,10 @@
-package search;
+package solver;
 
 import definition.Constraint;
 import definition.Csp;
 import definition.Variable;
 
-class BruteForce extends Solver {
+public class BruteForce extends Solver {
     BruteForce(String name, Variable[] vars) {
         this(name, vars, new Constraint[]{});
     }
@@ -16,8 +16,6 @@ class BruteForce extends Solver {
     BruteForce(String name, Csp csp) {
         super("Smallest Ratio Heuristics : " + name, csp);
     }
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     @Override
     protected boolean isNodeConsistent() {

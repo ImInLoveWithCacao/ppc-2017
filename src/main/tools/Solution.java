@@ -1,4 +1,4 @@
-package search;
+package tools;
 
 import definition.Variable;
 
@@ -7,20 +7,23 @@ public class Solution {
 
     public Solution(Variable[] vars) {
         int nbVars = vars.length;
-        this.variables = new Variable[nbVars];
-        for (int i=0; i<nbVars; i++) this.variables[i] = new Variable(vars[i]);
+        variables = new Variable[nbVars];
+        for (int i = 0; i < nbVars; i++)
+            variables[i] = new Variable(vars[i]);
     }
 
     int[] serialize() {
         int nbVars = variables.length;
         int[] rep = new int[nbVars];
-        for (int i=0; i<nbVars; i++) rep[i] = variables[i].getValue();
+        for (int i = 0; i < nbVars; i++)
+            rep[i] = variables[i].getValue();
         return rep;
     }
 
     public String toString() {
         String s = "\n";
-        for (Variable v : variables) s += v + "\n";
+        for (Variable v : variables)
+            s += v + "\n";
         return s;
     }
 }

@@ -1,4 +1,4 @@
-package search;
+package solver;
 
 import definition.Csp;
 
@@ -12,13 +12,13 @@ public class Filtered extends BackTrack {
     }
 
     /**
-     * Applique et propage les filtres, puis appelle coreSearch.
+     * Applique et propage les filtres, puis appelle Solver.coreSearch.
      */
     protected void coreSearch() {
         Propagator p = new Propagator(csp, currentNode);
         p.lauchPropagation(); // Propagation à partir de var.
 
-        if (p.areArcsConsistent()) super.coreSearch(); // Contient l'appel récursif à search().
+        if (p.areArcsConsistent()) super.coreSearch(); // Contient l'appel récursif à solver().
         p.restoreDomains();
     }
 }

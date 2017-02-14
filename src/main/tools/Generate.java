@@ -1,4 +1,4 @@
-package search;
+package tools;
 
 import definition.*;
 
@@ -86,23 +86,6 @@ public class Generate {
     }
 
     public static void allSearchCases(Csp csp, int n) {
-        String[] names = {"BruteForce", "BackTrack", "BackTrack2"};
-        int l = names.length;
-        BruteForce solver;
-        SearchResult result;
-        boolean filter = false;
-        for (int i = 0; i < 2 * l; i++) {
-            int j = i;
-            if (i>=l){
-                j = i-l;
-                filter = true;
-            }
-            for (int k = 0; k < 3; k++) {
-                solver = new BruteForce(names[j] + " n = " + n + "heuristic : " + k + ", filter : " + filter, csp);
-                //result = solver.searchWithTimer(j, filter, k);
-                // System.out.println(result.data() + "\n\n\n");
-            }
-        }
     }
 
     public static void main (String[] args) {

@@ -1,4 +1,4 @@
-package search;
+package solver;
 
 import definition.Constraint;
 import definition.ConstraintInf;

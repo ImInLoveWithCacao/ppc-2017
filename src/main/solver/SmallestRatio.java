@@ -3,7 +3,7 @@ package solver;
 import definition.Csp;
 import definition.Variable;
 
-public class SmallestRatio extends Filtered {
+public class SmallestRatio extends WithFilter {
     SmallestRatio(Csp csp) {
         this("Smallest Ratio Heuristics", csp);
     }

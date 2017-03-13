@@ -3,12 +3,12 @@ package definition;
 import java.util.BitSet;
 import java.util.Iterator;
 
-public class DomainIterator implements Iterator<Integer> {
-	private int i = 0;
+public class BitSetIterator implements Iterator<Integer> {
+    private int i = 0;
 	private BitSet d;
-	
-	public DomainIterator(BitSet d){
-		this.d = d;
+
+    BitSetIterator(BitSet d) {
+        this.d = d;
 	}
 
 	@Override

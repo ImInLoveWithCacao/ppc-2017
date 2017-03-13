@@ -27,7 +27,7 @@ class PropagatorTest {
                                                             }
                                              ), x2);
 
-        p.lauchPropagation();
+        p.propagateFromCurrentNode();
         assertArrayEquals(propTest, p.changedDomains());
         assertEquals(1, x1.getDomain().lastValue());
         assertEquals(0, x0.getDomain().lastValue());

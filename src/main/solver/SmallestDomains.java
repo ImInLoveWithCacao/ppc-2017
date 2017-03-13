@@ -3,7 +3,7 @@ package solver;
 import definition.Csp;
 import definition.Variable;
 
-public class SmallestDomains extends Filtered {
+public class SmallestDomains extends WithFilter {
     SmallestDomains(Csp csp) {
         this("Smallest domain heuristics", csp);
     }

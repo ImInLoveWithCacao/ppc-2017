@@ -7,49 +7,54 @@ import definition.Domain;
 import definition.Variable;
 import tools.SearchResult;
 
+
 abstract class Solver {
+    public final static int BRUTEFORCE = 0;
+    public static final int BACKTRACK = 1;
+    public static final int WITHFILTER = 2;
+
     Csp csp;
     Variable currentNode;
 
     /**
      * Sauvegarde le nombre de noeuds visités, le temps écoulé, etc.
      */
-    private SearchResult result;
+    SearchResult result;
 
-
-    Solver(String name, Variable[] vars, Constraint[] cons) {
-        this(name, new Csp(vars, cons));
+    static Solver createSolver(int type, String name, Variable[] vars) {
+        return createSolver(name, type, vars);
     }
 
-    Solver(String name, Csp csp) {
-        this.csp = csp;
-        result = new SearchResult(name);
+    static Solver createSolver(String name, int type, Variable[] vars, Constraint... cons) {
+        switch (type) {
+            case WITHFILTER:
+                return new WithFilter(name, vars, cons);
+            case BACKTRACK:
+                return new BackTrack(name, vars, cons);
+            case BRUTEFORCE:
+                return new BruteForce(name, vars, cons);
+            default:
+                throw new IllegalArgumentException("type " + type + " is not valid");
+        }
     }
-
-    // ---------------------------------------------- API --------------------------------------------------------------
 
     /**
-     * Lance la racherche
+     * Lance la recherche
      * @return Un object contentant les données relatives à la recherche (temps d'execution, resultats, etc).
      */
-    SearchResult searchWithTimer() {
+    SearchResult solve() {
         result.timerStart();
         search();
         result.timerEnd();
         return result;
     }
 
-    // ---------------------------------------------- Accessors --------------------------------------------------------
-
-    /**
-     * @return la prochaine variable à instancier en fonction de l'heuristique choisie
-     */
-    protected abstract Variable choseNextVar();
-
-    /**
-     * @return true ssi chaque variable a encore au moins une valeur réalisable (après instanciation).
-     */
-    protected abstract boolean isNodeConsistent();
+    private void search() {
+        if (!csp.allInstanciated())
+            fromNewVariable();
+        else if (isSolution())
+            saveSolution();
+    }
 
     /**
      * Appelée quand toutes les Variables sont instanciées.
@@ -57,6 +62,41 @@ abstract class Solver {
      */
     private boolean isSolution() {
         return csp.hasSolution();
+    }
+
+    private void saveSolution() {
+        result.addSol(csp.solution());
+    }
+
+    /**
+     * Choisit la prochaine variable à instancier puis parcourt son domaine.
+     */
+    private void fromNewVariable() {
+        Variable var = choseNextVar();
+        Domain d = saveAndGoThroughDomain(var);
+        var.setDomain(d);
+    }
+
+    /**
+     * @return la prochaine variable à instancier en fonction de l'heuristique choisie.
+     */
+    protected abstract Variable choseNextVar();
+
+    /**
+     * Sauvegarde le domaine de la variable puis continue la recherche.
+     * @return le domaine de var avant la suite de la recherche.
+     */
+    private Domain saveAndGoThroughDomain(Variable var) {
+        Domain clone = var.getDomain().clone();
+        for (Integer i : clone)
+            coreSearch(var, i);
+        return clone;
+    }
+
+    void coreSearch(Variable var, Integer value) {
+        setCurrentNode(var, value);
+        if (isNodeConsistent())
+            search();
     }
 
     /**
@@ -69,51 +109,9 @@ abstract class Solver {
         currentNode = var;
     }
 
-    private void saveSolution() {
-        result.addSol(csp.solution());
-    }
-
-    // ----------------------------------------------- Algo ------------------------------------------------------------
-
     /**
-     * Methode initiale lancée lors d'une recherche.
+     * @return true ssi chaque variable a encore au moins une valeur réalisable (après instanciation).
      */
-    private void search() {
-        if (!csp.allInstanciated())
-            fromNewVariable();
-        else if (isSolution())
-            saveSolution();
-    }
-
-    /**
-     * Choisit la prochaine variable à instancier, puis parcourt le domaine de la variable.
-     */
-    private void fromNewVariable() {
-        Variable var = choseNextVar();
-        Domain d = saveAndGoThroughDomain(var);
-        var.setDomain(d);
-    }
-
-    /**
-     * Sauvegarde le domaine de la variable, puis continue la recherche.
-     *
-     * @return le domaine de var avant la suite de la recherche.
-     */
-    private Domain saveAndGoThroughDomain(Variable var) {
-        Domain d = var.getDomain().clone();
-        for (Integer i : d) {       // Exploration à partir de var.
-            setCurrentNode(var, i);
-            coreSearch();
-        }
-        return d;
-    }
-
-    /**
-     * Continue la recherche si possible.
-     */
-    protected void coreSearch() {
-        if (isNodeConsistent())
-            search();
-    }
+    protected abstract boolean isNodeConsistent();
 
 }

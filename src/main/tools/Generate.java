@@ -1,29 +1,12 @@
 package tools;
 
 import definition.*;
+import factories.VariableFactory;
 
 public class Generate {
-    // User variables
-    public static final int BRUTEFORCE = 0;
-    public static final int BACKTRACK = 1;
-    public static final int BACKTRACK2 = 2;
-    public static final boolean ON = true;
-    public static final boolean OFF = false;
-    public static final int RANDOM = 0;
-
-
-    private static Variable[] generateRandomVars(int nb, int minDom, int maxDom) {
-        Variable[] res = new Variable[nb];
-        for (int i = 0; i < nb; i++) {
-            int[] dom = Tools.randomTwo(minDom, maxDom);
-            res[i] = new Variable("x" + i, i, dom[0], dom[1]);
-        }
-        return res;
-    }
-
 
     private static Csp generate31(){
-        Variable[] vars = generateRandomVars(3, 0, 2);
+        Variable[] vars = VariableFactory.generateRandomVars(3, 0, 2);
         Constraint c1 = new ConstraintInf(vars[0], vars[2]);
         return new Csp(vars, new Constraint[]{c1});
     }
@@ -76,19 +59,5 @@ public class Generate {
         for (int i=0; i<nbVars-1; i++) cons[i] = new ConstraintInf(vars[i], vars[i+1]);
         cons[nbVars - 1] = new ConstraintInf(vars[nbVars-1], vars[0]);
         return new Csp(vars, cons);
-    }
-
-    private static void test(){
-        int n = 3;
-        Csp csp = generateRandom(n, n-2, 0, n);//generateMonteeEnCharge(n);//generate31();//generate53();//
-        System.out.println("---------------PROLEME : \n" +  csp.toString());
-        allSearchCases(csp, n);
-    }
-
-    public static void allSearchCases(Csp csp, int n) {
-    }
-
-    public static void main (String[] args) {
-        test();
     }
 }

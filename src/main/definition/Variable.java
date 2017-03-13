@@ -13,7 +13,7 @@ public class Variable {
     private int idx;
 
     /**
-     * Le domaine associe.
+     * Le domaine associé.
      */
     private Domain dom;
 
@@ -67,13 +67,6 @@ public class Variable {
      */
     int getDomainSize() {
         return getDomain().size();
-    }
-
-    /**
-     * supprime la valeur v du domaine de la variable.
-     */
-    public void remValue(int v) {
-        this.dom.remove(v);
     }
 
     /**

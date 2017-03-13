@@ -2,28 +2,43 @@ package tools;
 
 import definition.Variable;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 public class Solution {
-    private Variable[] variables;
+    Map<String, Integer> solutions;
 
     public Solution(Variable[] vars) {
+        solutions = new HashMap<String, Integer>();
         int nbVars = vars.length;
-        variables = new Variable[nbVars];
-        for (int i = 0; i < nbVars; i++)
-            variables[i] = new Variable(vars[i]);
+        Variable var;
+        for (int i = 0; i < nbVars; i++) {
+            var = vars[i];
+            solutions.put("X" + var.getInd(), var.getValue());
+        }
+    }
+
+    private int getNbVars() {
+        return solutions.size();
     }
 
     int[] serialize() {
-        int nbVars = variables.length;
-        int[] rep = new int[nbVars];
-        for (int i = 0; i < nbVars; i++)
-            rep[i] = variables[i].getValue();
-        return rep;
+        int i = 0;
+        int nbVars = getNbVars();
+        int[] res = new int[nbVars];
+        Collection<Integer> collection = solutions.values();
+        for (Integer value : collection) {
+            res[i] = value;
+            i++;
+        }
+        return res;
     }
 
     public String toString() {
-        String s = "\n";
-        for (Variable v : variables)
-            s += v + "\n";
-        return s;
+        String res = "";
+        for (Map.Entry<String, Integer> s : solutions.entrySet())
+            res += s.getKey() + " = " + s.getValue();
+        return res;
     }
 }

@@ -3,18 +3,17 @@ package solver;
 import definition.Constraint;
 import definition.Csp;
 import definition.Variable;
+import tools.SearchResult;
 
 public class BruteForce extends Solver {
-    BruteForce(String name, Variable[] vars) {
-        this(name, vars, new Constraint[]{});
-    }
 
-    BruteForce(String name, Variable[] vars, Constraint[] cons) {
-        super(name, vars, cons);
+    BruteForce(String name, Variable[] vars, Constraint... cons) {
+        this(name, new Csp(vars, cons));
     }
 
     BruteForce(String name, Csp csp) {
-        super("Smallest Ratio Heuristics : " + name, csp);
+        this.csp = csp;
+        this.result = new SearchResult(name);
     }
 
     @Override

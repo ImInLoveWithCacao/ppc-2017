@@ -38,9 +38,9 @@ class Propagator {
     Propagator(Csp csp, Variable currentNode) {
         this.csp = csp;
         this.currentNode = currentNode;
-        this.savedDomains = csp.cloneDomains();
-        this.activeConstraints = new LinkedList<Constraint>();
-        this.arcConsistency = true;
+        savedDomains = csp.cloneDomains();
+        activeConstraints = new LinkedList<Constraint>();
+        arcConsistency = true;
     }
 
 
@@ -92,7 +92,7 @@ class Propagator {
      * propagation à travers les contraintes qui concernet les variables dont le domaine
      * a été réduit par un filtrage.
      */
-    void lauchPropagation() {
+    void propagateFromCurrentNode() {
         prepareDomains();
         activeConstraints.addAll(csp.getConstraintsAsArrayList(currentNode));
 

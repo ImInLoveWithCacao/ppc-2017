@@ -34,16 +34,10 @@ public class DomainBitSet implements Domain {
 		return this.values.cardinality();
 	}
 
-    /**
-     * @return la première valeur du domaine
-     */
     public int firstValue() {
 		return values.nextSetBit(0);
 	}
 
-    /**
-     * @return la derniere valeur du domaine
-     */
     public int lastValue() {
         return values.length() - 1;
     }
@@ -53,8 +47,8 @@ public class DomainBitSet implements Domain {
 	}
 
 	public Iterator<Integer> iterator() {
-		return new DomainIterator(values);
-	}
+        return new BitSetIterator(values);
+    }
 
 	public boolean contains(int v) {
         return values.nextSetBit(v) == v;
@@ -64,14 +58,6 @@ public class DomainBitSet implements Domain {
 		boolean rep = values.get(v);
 		values.clear(v);
 		return rep;
-	}
-	
-	public int next(int i){
-		return values.nextSetBit(i+1);
-	}
-	
-	public int previous(int i){
-		return values.previousSetBit(i);
 	}
 
 	public void fix(int v) {

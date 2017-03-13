@@ -5,10 +5,8 @@ import definition.Variable;
 import org.junit.jupiter.api.Test;
 import tools.SearchResult;
 
-import static factories.ConstraintFactory.INF;
-import static factories.ConstraintFactory.binaryConstraint;
-import static factories.VariableFactory.createVariables;
-import static factories.VariableFactory.decreasingDomains;
+import static factories.ConstraintFactory.*;
+import static factories.VariableFactory.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -43,7 +41,7 @@ class BruteForceTest {
         Variable[] vars = createVariables(2, 0, 1);
 
         SearchResult res = Solver.createSolver(
-                "simple test", Solver.BRUTEFORCE,
+                Solver.BRUTEFORCE, "simple test",
                 vars, binaryConstraint(vars[0], INF, vars[1])
         ).solve();
 

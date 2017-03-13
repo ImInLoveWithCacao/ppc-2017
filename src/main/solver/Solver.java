@@ -17,7 +17,7 @@ abstract class Solver {
     Variable currentNode;
 
     /**
-     * Sauvegarde le nombre de noeuds visités, le temps écoulé, etc.
+     * Sauvegarde le nombre de noeuds visités, le temps écoulé, etc. YOYOTEST
      */
     SearchResult result;
 

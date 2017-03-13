@@ -22,17 +22,21 @@ abstract class Solver {
     SearchResult result;
 
     static Solver createSolver(int type, String name, Variable[] vars) {
-        return createSolver(name, type, vars);
+        return createSolver(type, name, vars, new Constraint[]{});
     }
 
-    static Solver createSolver(String name, int type, Variable[] vars, Constraint... cons) {
+    static Solver createSolver(int type, String name, Variable[] vars, Constraint... cons) {
+        return createSolver(type, name, new Csp(vars, cons));
+    }
+
+    static Solver createSolver(int type, String name, Csp csp) {
         switch (type) {
             case WITHFILTER:
-                return new WithFilter(name, vars, cons);
+                return new WithFilter(name, csp);
             case BACKTRACK:
-                return new BackTrack(name, vars, cons);
+                return new BackTrack(name, csp);
             case BRUTEFORCE:
-                return new BruteForce(name, vars, cons);
+                return new BruteForce(name, csp);
             default:
                 throw new IllegalArgumentException("type " + type + " is not valid");
         }

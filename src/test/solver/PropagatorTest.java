@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PropagatorTest {
-    private final boolean[] propTest = new boolean[]{true, true, false};
+    private final Boolean[] propTest = new Boolean[]{true, true, false};
 
     @Test
     void it_propagates_correctly() {

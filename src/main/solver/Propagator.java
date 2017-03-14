@@ -6,8 +6,8 @@ import definition.Domain;
 import definition.Variable;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
+import java.util.stream.IntStream;
 
 class Propagator {
     private Csp csp;
@@ -25,7 +25,7 @@ class Propagator {
      * Un tableau de nbVariables boolean. L'élément i vaut true ssi son domaine a
      * changé lors de la propagation.
      */
-    private boolean[] changedDomains;
+    private Boolean[] changedDomains;
 
     /**
      * Contient les contraintes que la propagation du filtrage va activer.
@@ -47,7 +47,7 @@ class Propagator {
         return arcConsistency;
     }
 
-    boolean[] changedDomains() {
+    Boolean[] changedDomains() {
         return changedDomains;
     }
 
@@ -67,10 +67,12 @@ class Propagator {
      * Restore les domaines à leur état d'avant le filtrage.
      */
     void restoreDomains() {
-        int nbVars = csp.getNbVars();
-        for (int i = 0; i < nbVars; i++)
-            if (changedDomains[i])
-                csp.getVars()[i].setDomain(savedDomains[i]);
+        IntStream.range(0, csp.getNbVars()).forEach(
+                i -> {
+                    if (changedDomains[i])
+                        csp.getVars()[i].setDomain(savedDomains[i]);
+                }
+        );
     }
 
     /**
@@ -88,9 +90,7 @@ class Propagator {
 
 
     private void prepareDomains() {
-        int nb = csp.getNbVars();
-        changedDomains = new boolean[nb];
-        for (int i = 0; i < nb; i++) changedDomains[i] = false;
+        changedDomains = IntStream.range(0, csp.getNbVars()).mapToObj(i -> false).toArray(Boolean[]::new);
     }
 
     private void startPropagation() {
@@ -102,10 +102,12 @@ class Propagator {
     }
 
     private void propagate() {
-        int len = currentFilter.length;
-        for (int i = 1; i < len; i++)
-            if (currentFilter[i])
-                activateVariable(currentConstraint.getVars()[i - 1]);
+        IntStream.range(0, currentFilter.length).forEach(
+                i -> {
+                    if (currentFilter[i])
+                        activateVariable(currentConstraint.getVars()[i - 1]);
+                }
+        );
     }
 
     private void activateVariable(Variable var) {
@@ -114,9 +116,11 @@ class Propagator {
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
-        List<Constraint> cons1 = csp.getConstraintsAsArrayList(modifiedVariable);
-        for (Constraint c1 : cons1)
-            if (!c1.equals(currentConstraint) && !activeConstraints.contains(c1))
-                activeConstraints.add(c1);
+        csp.getConstraintsAsArrayList(modifiedVariable).forEach(
+                c -> {
+                    if (!c.equals(currentConstraint) && !activeConstraints.contains(c))
+                        activeConstraints.add(c);
+                }
+        );
     }
 }

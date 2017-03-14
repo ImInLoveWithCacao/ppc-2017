@@ -1,20 +1,11 @@
 package solver;
 
-import definition.Constraint;
 import definition.Csp;
 import definition.Variable;
 
 public class WithFilter extends BackTrack {
-    WithFilter(Csp csp) {
-        this("WithFilter Search", csp);
-    }
-
     WithFilter(String name, Csp csp) {
         super(name, csp);
-    }
-
-    WithFilter(String name, Variable[] vars, Constraint[] cons) {
-        super(name, vars, cons);
     }
 
     /**

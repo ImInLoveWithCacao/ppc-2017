@@ -1,9 +1,12 @@
 package definition;
 
 import tools.Solution;
-import tools.Tools;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static factories.VariableFactory.createOneVar;
 
 
 public class Csp {
@@ -48,7 +51,7 @@ public class Csp {
 	}
 
     public Variable smallestDomain() {
-        Variable smallest = new Variable("biggest", -1, 0, 99999);
+        Variable smallest = createOneVar(-1, 0, 99999);
         for (Variable v : this.vars)
             if (!v.isInstantiated()
                     && v.getDomainSize() < smallest.getDomainSize())
@@ -58,7 +61,7 @@ public class Csp {
 
 
     public Variable smallestRatio() {
-        Variable smallest = new Variable("biggest", -1, 0, 99999);
+        Variable smallest = createOneVar(-1, 0, 99999);
         for (Variable v : this.vars)
             if (!v.isInstantiated()
                     && ratio(v) < ratio(smallest))
@@ -90,16 +93,10 @@ public class Csp {
      * @return true vrai l'ensemble des contraintes du CSP est verifié.
      */
 	public boolean hasSolution() {
-		for (Constraint c : getConstraints()) if (!c.isSatisfied()) return false;
-		return allInstanciated();
+        for (Constraint c : getConstraints())
+            if (!c.isSatisfied()) return false;
+        return allInstanciated();
 	}
-
-	public Variable[] instanciated() {
-		ArrayList<Variable> vars = new ArrayList<Variable>();
-        for (Variable v : vars)
-            if (v.isInstantiated()) vars.add(v);
-        return (Variable[]) vars.toArray();
-    }
 
     private int getNbConstraints(Variable var) {
         return getConstraintsAsArray(var).length;
@@ -109,25 +106,15 @@ public class Csp {
      * @return un array contenant les constraintes du Csp concernées par var.
      */
     private Constraint[] getConstraintsAsArray(Variable var) {
-        return Tools.toArray(getConstraintsAsArrayList(var));
+        List<Constraint> list = getConstraintsAsArrayList(var);
+        return list.toArray(new Constraint[list.size()]);
     }
 
-    public ArrayList<Constraint> getConstraintsAsArrayList(Variable var) {
-        ArrayList<Constraint> rep = new ArrayList<Constraint>();
-		for (Constraint c : getConstraints()) {
-			Variable[] vars = c.getVars();
-			for (Variable v : vars) if (v.equals(var)) rep.add(c);
-		}
-		return rep;
-	}
-
-    public boolean satisfied(Variable node) {
-        Constraint[] cons = getConstraintsAsArray(node);
-        for (Constraint c : cons)
-			if (c.areInstanciated() && !c.isSatisfied())
-				return false;
-		return true;
-	}
+    public List<Constraint> getConstraintsAsArrayList(Variable var) {
+        return Arrays.stream(getConstraints())
+                       .filter(c -> c.affects(var))
+                       .collect(Collectors.toList());
+    }
 
     public boolean necessary(Variable node) {
         Constraint[] cons = getConstraintsAsArray(node);
@@ -138,12 +125,12 @@ public class Csp {
 	}
 
 	public String toString() {
-		String s = "---Variables : \n";
-        for (Variable v : getVars()) s += v + "\n";
-        s += "---Contraintes \n";
-        for (Constraint c : getConstraints()) s += c + "\n";
-        return s;
-	}
+        final StringBuilder s = new StringBuilder("---Variables : \n");
+        Arrays.stream(getVars()).forEach(v -> s.append(v).append("\n"));
+        s.append("---Contraintes \n");
+        Arrays.stream(getConstraints()).forEach(c -> s.append(c).append("\n"));
+        return s.toString();
+    }
 
 	public Solution solution() {
         return new Solution(getVars());

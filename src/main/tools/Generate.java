@@ -12,11 +12,11 @@ public class Generate {
     }
 
     public static Csp generate53(){
-        Variable x0 = new Variable ("x0", 0, 3, 4);
-        Variable x1 = new Variable ("x1", 1, 4, 5);
-        Variable x2 = new Variable ("x2", 2, 1, 4);
-        Variable x3 = new Variable ("x3", 3, 3, 4);
-        Variable x4 = new Variable ("x4", 4, 3, 4);
+        Variable x0 = new Variable(0, 3, 4);
+        Variable x1 = new Variable(1, 4, 5);
+        Variable x2 = new Variable(2, 1, 4);
+        Variable x3 = new Variable(3, 3, 4);
+        Variable x4 = new Variable(4, 3, 4);
         Constraint c1 = new ConstraintInf(x0, x3);
         Constraint c2 = new ConstraintInf(x3, x4);
         Constraint c3 = new ConstraintDiff(x2, x4);
@@ -37,7 +37,7 @@ public class Generate {
         Variable[] vars = new Variable[nbVar];
         for (int i=0; i<nbVar; i++){
             int[] dom = Tools.randomTwo(minD, maxD);
-            vars[i] = new Variable("x" + i, i, dom[0], dom[1]);
+            vars[i] = new Variable(i, dom[0], dom[1]);
         }
         Constraint[] cons = new Constraint[nbCons];
         int[][] pairs = Tools.randomPairs(nbCons, nbVar);
@@ -54,7 +54,7 @@ public class Generate {
 
     public static Csp generateMonteeEnCharge(int nbVars){
         Variable[] vars = new Variable[nbVars];
-        for (int i=0; i<nbVars; i++) vars[i] = new Variable("x"+i, i, 1, 10);
+        for (int i = 0; i < nbVars; i++) vars[i] = new Variable(i, 1, 10);
         Constraint[] cons = new Constraint[nbVars];
         for (int i=0; i<nbVars-1; i++) cons[i] = new ConstraintInf(vars[i], vars[i+1]);
         cons[nbVars - 1] = new ConstraintInf(vars[nbVars-1], vars[0]);

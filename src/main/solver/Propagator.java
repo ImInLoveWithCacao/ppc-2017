@@ -5,9 +5,8 @@ import definition.Csp;
 import definition.Domain;
 import definition.Variable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 class Propagator {
@@ -39,12 +38,10 @@ class Propagator {
         this.csp = csp;
         this.currentNode = currentNode;
         savedDomains = csp.cloneDomains();
-        activeConstraints = new LinkedList<Constraint>();
+        activeConstraints = new LinkedList<>();
         arcConsistency = true;
     }
 
-
-    // ------------------------------------------ Accessors ------------------------------------------------------------
 
     boolean areArcsConsistent() {
         return arcConsistency;
@@ -66,17 +63,6 @@ class Propagator {
         currentFilter = filter;
     }
 
-    private boolean[] copyDomains() {
-        return Arrays.copyOf(changedDomains, changedDomains.length);
-    }
-
-    private void setChangedDomains(boolean[] domains) {
-        changedDomains = domains;
-    }
-
-
-    // ------------------------------------------ API ------------------------------------------------------------------
-
     /**
      * Restore les domaines à leur état d'avant le filtrage.
      */
@@ -96,11 +82,10 @@ class Propagator {
         prepareDomains();
         activeConstraints.addAll(csp.getConstraintsAsArrayList(currentNode));
 
-        while (canStillPropagate() && arcConsistency) startPropagation();
+        while (canStillPropagate() && arcConsistency)
+            startPropagation();
     }
 
-
-    // -----------------------------------------------------------------------------------------------------------------
 
     private void prepareDomains() {
         int nb = csp.getNbVars();
@@ -129,7 +114,7 @@ class Propagator {
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
-        ArrayList<Constraint> cons1 = csp.getConstraintsAsArrayList(modifiedVariable);
+        List<Constraint> cons1 = csp.getConstraintsAsArrayList(modifiedVariable);
         for (Constraint c1 : cons1)
             if (!c1.equals(currentConstraint) && !activeConstraints.contains(c1))
                 activeConstraints.add(c1);

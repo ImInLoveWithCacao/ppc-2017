@@ -1,9 +1,5 @@
 package tools;
 
-import definition.Constraint;
-
-import java.util.ArrayList;
-
 public class Tools {
 
 	public static int[] randomTwo(int minD, int maxD) {
@@ -15,13 +11,6 @@ public class Tools {
 		rep[1] = (int) (minD + Math.max(rand1, rand2));
 		if (rand1 == rand2) return randomTwo(minD, maxD);
 		else return rep;
-	}
-
-	public static Constraint[] toArray(ArrayList<Constraint> in) {
-		int l = in.size();
-		Constraint[] rep = new Constraint[l];
-		for (int i=0; i<l; i++) rep[i] = in.get(i);
-		return rep;
 	}
 
     static int[][] randomPairs(int nbCons, int nbVars) {

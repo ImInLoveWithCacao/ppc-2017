@@ -3,34 +3,33 @@ package factories;
 import definition.Variable;
 import tools.Tools;
 
+import java.util.stream.IntStream;
+
 public class VariableFactory {
-    public static Variable[] decreasingDomains(int nb, int maxD) {
-        Variable[] res = new Variable[nb];
-        for (int i = 0; i < nb; i++) {
-            res[i] = new Variable("x" + i, i, 0, maxD - i);
-        }
-        return res;
+    public static Variable[] decreasingDomains(int nbVars, int maxD) {
+        return IntStream.range(0, nbVars)
+                       .mapToObj(i -> createOneVar(i, 0, maxD - i))
+                       .toArray(Variable[]::new);
     }
 
-    public static Variable[] generateRandomVars(int nb, int minDom, int maxDom) {
-        Variable[] res = new Variable[nb];
-        for (int i = 0; i < nb; i++) {
-            int[] dom = Tools.randomTwo(minDom, maxDom);
-            res[i] = new Variable("x" + i, i, dom[0], dom[1]);
-        }
-        return res;
+    public static Variable[] generateRandomVars(int nbVars, int minDom, int maxDom) {
+        return IntStream.range(0, nbVars)
+                       .mapToObj(
+                               i -> {
+                                   int[] dom = Tools.randomTwo(minDom, maxDom);
+                                   return createOneVar(i, dom[0], dom[1]);
+                               }
+                       ).toArray(Variable[]::new);
     }
 
 
     public static Variable[] createVariables(int nbVars, int minD, int maxD) {
-        Variable[] res = new Variable[nbVars];
-        for (int i = 0; i < nbVars; i++) {
-            res[i] = createOneVar("x" + i, i, minD, maxD);
-        }
-        return res;
+        return IntStream.range(0, nbVars)
+                       .mapToObj(i -> createOneVar(i, minD, maxD))
+                       .toArray(Variable[]::new);
     }
 
-    public static Variable createOneVar(String name, int index, int minD, int maxD) {
-        return new Variable(name, index, minD, maxD);
+    public static Variable createOneVar(int index, int minD, int maxD) {
+        return new Variable(index, minD, maxD);
     }
 }

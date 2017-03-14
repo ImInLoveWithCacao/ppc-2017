@@ -4,10 +4,6 @@ import definition.Csp;
 import definition.Variable;
 
 public class SmallestDomains extends WithFilter {
-    SmallestDomains(Csp csp) {
-        this("Smallest domain heuristics", csp);
-    }
-
     SmallestDomains(String name, Csp csp) {
         super(name, csp);
     }

@@ -31,9 +31,9 @@ public class ConstraintDiff extends Constraint {
 		else if (v2.isInstantiated()) rep1 = d1.remove(v2.getValue());
 		return new boolean[]{(d1.size() == 0 || d2.size() == 0), rep1, rep2};
 	}
-	
-	public boolean equals (Object o){
-		return (o instanceof ConstraintDiff) 
+
+    public boolean equals(Object o) {
+        return (o instanceof ConstraintDiff)
 				&& ((ConstraintDiff)o).getVars().equals(getVars());
 	}
 

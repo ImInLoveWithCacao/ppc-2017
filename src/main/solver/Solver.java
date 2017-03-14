@@ -8,7 +8,7 @@ import definition.Variable;
 import tools.SearchResult;
 
 
-abstract class Solver {
+public abstract class Solver {
     public final static int BRUTEFORCE = 0;
     public static final int BACKTRACK = 1;
     public static final int WITHFILTER = 2;
@@ -19,7 +19,12 @@ abstract class Solver {
     /**
      * Sauvegarde le nombre de noeuds visités, le temps écoulé, etc. YOYOTEST
      */
-    SearchResult result;
+    private SearchResult result;
+
+    Solver(String name, Csp csp) {
+        this.csp = csp;
+        this.result = new SearchResult(name);
+    }
 
     static Solver createSolver(int type, String name, Variable[] vars) {
         return createSolver(type, name, vars, new Constraint[]{});
@@ -92,8 +97,7 @@ abstract class Solver {
      */
     private Domain saveAndGoThroughDomain(Variable var) {
         Domain clone = var.getDomain().clone();
-        for (Integer i : clone)
-            coreSearch(var, i);
+        clone.forEach(i -> coreSearch(var, i));
         return clone;
     }
 

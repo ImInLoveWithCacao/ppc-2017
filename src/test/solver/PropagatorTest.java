@@ -1,11 +1,13 @@
 package solver;
 
 import definition.Constraint;
-import definition.ConstraintInf;
 import definition.Csp;
 import definition.Variable;
 import org.junit.jupiter.api.Test;
 
+import static factories.ConstraintFactory.INF;
+import static factories.ConstraintFactory.binaryConstraint;
+import static factories.VariableFactory.createOneVar;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,18 +16,13 @@ class PropagatorTest {
 
     @Test
     void it_propagates_correctly() {
-        Variable x0 = new Variable("x0", 0, 0, 2);
-        Variable x1 = new Variable("x1", 1, 0, 2);
-        Variable x2 = new Variable("x2", 2, 2, 2);
+        Variable x0 = createOneVar(0, 0, 2);
+        Variable x1 = createOneVar(1, 0, 2);
+        Variable x2 = createOneVar(2, 2, 2);
+        Constraint c1 = binaryConstraint(x0, INF, x1);
+        Constraint c2 = binaryConstraint(x1, INF, x2);
 
-        Propagator p = new Propagator(
-                                             new Csp(
-                                                            new Variable[]{x0, x1, x2},
-                                                            new Constraint[]{
-                                                                    new ConstraintInf(x0, x1),
-                                                                    new ConstraintInf(x1, x2)
-                                                            }
-                                             ), x2);
+        Propagator p = new Propagator(new Csp(new Variable[]{x0, x1, x2}, new Constraint[]{c1, c2}), x2);
 
         p.propagateFromCurrentNode();
         assertArrayEquals(propTest, p.changedDomains());

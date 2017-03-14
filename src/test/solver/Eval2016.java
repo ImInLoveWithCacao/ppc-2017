@@ -1,55 +1,18 @@
 package solver;
 
-import org.junit.jupiter.api.Assertions;
+import definition.Constraint;
+import definition.Csp;
+import definition.Variable;
 import org.junit.jupiter.api.Test;
 
-import definition.*;
 import static factories.ConstraintFactory.*;
-import static factories.VariableFactory.*;
-import static solver.Solver.*;
+import static factories.VariableFactory.createVariables;
+import static solver.Solver.BACKTRACK;
+import static solver.Solver.BRUTEFORCE;
 
 
 public class Eval2016 {
     //---------------------QUESTION 1------------------------------------------------------
-
-    @Test
-    void question_1_n_egal_5() {
-        assertQueston1(5, 107, BRUTEFORCE, BACKTRACK);
-    }
-
-    @Test
-    void question_1_n_egal_6() {
-        assertQueston1(6, 1468, BACKTRACK);
-    }
-
-    private static void assertQueston1(int maxDomainSize, int expectedNbSols, int... options) {
-        assertForGivenOptions(
-                "question 1, n=" + maxDomainSize,
-                generateQuestion1(maxDomainSize), expectedNbSols,
-                options
-        );
-    }
-
-    private static void assertForGivenOptions(String solverName, Csp csp, int expectedNbSols, int... options) {
-        int nbSolsFound;
-
-        for (int i : options) {
-            nbSolsFound = createSolver(i, solverName, csp).solve().getNbSols();
-            try {
-                Assertions.assertEquals(nbSolsFound, expectedNbSols);
-            }
-            catch (AssertionError e) {
-                throw new AssertionError(
-                        new StringBuilder()
-                                .append("\n----------- ").append(solverName).append(" -----------\n")
-                                .append("Solver type ").append(i)
-                                .append(" didn't find the correct number of solutions.\n")
-                                .append("expected: ").append(expectedNbSols).append("\n")
-                                .append("actual: ").append(nbSolsFound).append("\n")
-                );
-            }
-        }
-    }
 
     static Csp generateQuestion1(int maxD){
         Variable[] vars = createVariables(10, 1, maxD);
@@ -61,22 +24,32 @@ public class Eval2016 {
         Variable x6 = vars[6];
 
         Constraint[] cons = new Constraint[14];
-        cons[0] = binaryConstraint(x0, "<", x2);
-        cons[1] = binaryConstraint(x0, "<", x4);
-        cons[2] = binaryConstraint(x1, "<=", x2);
-        cons[3] = binaryConstraint(x1, "<", x3);
-        cons[4] = binaryConstraint(x1, "<", vars[7]);
-        cons[5] = binaryConstraint(x3, "<", x2);
-        cons[6] = binaryConstraint(x4, "<=", x1);
-        cons[7] = binaryConstraint(x4, "<", x6);
-        cons[8] = binaryConstraint(x4, "!=", vars[9]);
-        cons[9] = binaryConstraint(vars[5], "<", vars[9]);
-        cons[10] = binaryConstraint(x6, "!=", vars[7]);
-        cons[11] = binaryConstraint(x6, "!=", vars[8]);
-        cons[12] = binaryConstraint(vars[7], "<=", vars[8]);
-        cons[13] = binaryConstraint(vars[9], "<", vars[8]);
+        cons[0] = binaryConstraint(x0, INF, x2);
+        cons[1] = binaryConstraint(x0, INF, x4);
+        cons[2] = binaryConstraint(x1, INF_EQ, x2);
+        cons[3] = binaryConstraint(x1, INF, x3);
+        cons[4] = binaryConstraint(x1, INF, vars[7]);
+        cons[5] = binaryConstraint(x3, INF, x2);
+        cons[6] = binaryConstraint(x4, INF_EQ, x1);
+        cons[7] = binaryConstraint(x4, INF, x6);
+        cons[8] = binaryConstraint(x4, DIFF, vars[9]);
+        cons[9] = binaryConstraint(vars[5], INF, vars[9]);
+        cons[10] = binaryConstraint(x6, DIFF, vars[7]);
+        cons[11] = binaryConstraint(x6, DIFF, vars[8]);
+        cons[12] = binaryConstraint(vars[7], INF_EQ, vars[8]);
+        cons[13] = binaryConstraint(vars[9], INF, vars[8]);
 
         return new Csp (vars, cons);
+    }
+
+    @Test
+    void question_1_n_egal_5() {
+        TestTools.assertQueston1(5, 107, BRUTEFORCE, BACKTRACK);
+    }
+
+    @Test
+    void question_1_n_egal_6() {
+        TestTools.assertQueston1(6, 1468, BACKTRACK);
     }
 
 //    public static void resolutionPb(int maxVal){

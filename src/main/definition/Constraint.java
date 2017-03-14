@@ -43,6 +43,14 @@ public abstract class Constraint {
      * vaut true si le domaine de la seconde variable a changé.
      */
 	public abstract boolean[] filter();
-	
-	public abstract String toString();
+
+    /**
+     * @param var
+     * @return True si var est concernée par la contrainte
+     */
+    boolean affects(Variable var) {
+        return getVars()[0].equals(var) || getVars()[1].equals(var);
+    }
+
+    public abstract String toString();
 }

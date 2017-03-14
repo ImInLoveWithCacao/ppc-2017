@@ -20,8 +20,8 @@ public class Variable {
     /**
      * Construit une variable "name" definie entre les valeurs min et max (incluses).
      */
-    public Variable(String name, int idx, int min, int max) {
-        this.name = name;
+    public Variable(int idx, int min, int max) {
+        this.name = "x" + idx;
         this.idx = idx;
         this.dom = new DomainBitSet(min,max);
     }
@@ -36,7 +36,7 @@ public class Variable {
     	return idx;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -94,8 +94,7 @@ public class Variable {
      * @return la valeur affectee a la variable ssi la variable est effectivement instanciee, sinon -1.
      */
     public int getValue() {
-    	if (isInstantiated()) return getInf();
-    	else return -1;
+        return isInstantiated() ? getInf() : -1;
     }
 
     /**

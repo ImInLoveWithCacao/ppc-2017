@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 
-import static factories.ConstraintFactory.INF;
-import static factories.ConstraintFactory.binaryConstraint;
-import static factories.VariableFactory.createVariables;
+import static definition.factories.ConstraintFactory.INF;
+import static definition.factories.ConstraintFactory.binaryConstraint;
+import static definition.factories.VariableFactory.createVariables;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static solver.Solver.BRUTEFORCE;
@@ -46,12 +46,10 @@ class BruteForceTest {
 
         Integer[][] sols = createSolver(
                 BRUTEFORCE, "simple tools",
-                vars,
-                binaryConstraint(vars[0], INF, vars[1])
+                vars, binaryConstraint(vars[0], INF, vars[1])
         ).solve().serializedSolutions();
 
         assertEquals(1, sols.length);
         assertArrayEquals(sols[0], simpleTestSolutions[0]);
     }
-
 }

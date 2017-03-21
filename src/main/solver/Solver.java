@@ -1,17 +1,15 @@
 package solver;
 
-
 import definition.Constraint;
 import definition.Csp;
 import definition.Domain;
 import definition.Variable;
 import tools.SearchResult;
 
-
 public abstract class Solver {
-    public final static int BRUTEFORCE = 0;
-    public static final int BACKTRACK = 1;
-    public static final int WITHFILTER = 2;
+    static final int BRUTEFORCE = 0;
+    static final int BACKTRACK = 1;
+    static final int WITHFILTER = 2;
 
     Csp csp;
     Variable currentNode;
@@ -82,7 +80,7 @@ public abstract class Solver {
      */
     private void fromNewVariable() {
         Variable var = choseNextVar();
-        Domain d = saveAndGoThroughDomain(var);
+        Domain d = saveDomainAndSearchBranch(var);
         var.setDomain(d);
     }
 
@@ -95,14 +93,18 @@ public abstract class Solver {
      * Sauvegarde le domaine de la variable puis continue la recherche.
      * @return le domaine de var avant la suite de la recherche.
      */
-    private Domain saveAndGoThroughDomain(Variable var) {
-        Domain clone = var.getDomain().clone();
-        clone.forEach(i -> coreSearch(var, i));
+    private Domain saveDomainAndSearchBranch(Variable var) {
+        Domain clone = var.cloneDomain();
+        clone.forEach(i -> instantiateAndSearchBranch(var, i));
         return clone;
     }
 
-    void coreSearch(Variable var, Integer value) {
+    private void instantiateAndSearchBranch(Variable var, Integer value) {
         setCurrentNode(var, value);
+        coreSearch(var, value);
+    }
+
+    void coreSearch(Variable var, Integer value) {
         if (isNodeConsistent())
             search();
     }

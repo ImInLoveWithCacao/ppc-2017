@@ -69,8 +69,7 @@ class Propagator {
     void restoreDomains() {
         IntStream.range(0, csp.getNbVars()).forEach(
                 i -> {
-                    if (changedDomains[i])
-                        csp.getVars()[i].setDomain(savedDomains[i]);
+                    if (changedDomains[i]) csp.getVars()[i].setDomain(savedDomains[i]);
                 }
         );
     }
@@ -104,8 +103,7 @@ class Propagator {
     private void propagate() {
         IntStream.range(0, currentFilter.length).forEach(
                 i -> {
-                    if (currentFilter[i])
-                        activateVariable(currentConstraint.getVars()[i - 1]);
+                    if (currentFilter[i]) activateVariable(currentConstraint.getVars()[i - 1]);
                 }
         );
     }
@@ -118,8 +116,7 @@ class Propagator {
     private void addActivatedConstraints(Variable modifiedVariable) {
         csp.getConstraintsAsArrayList(modifiedVariable).forEach(
                 c -> {
-                    if (!c.equals(currentConstraint) && !activeConstraints.contains(c))
-                        activeConstraints.add(c);
+                    if (!c.equals(currentConstraint) && !activeConstraints.contains(c)) activeConstraints.add(c);
                 }
         );
     }

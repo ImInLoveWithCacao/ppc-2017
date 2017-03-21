@@ -5,9 +5,9 @@ import definition.Csp;
 import definition.Variable;
 import org.junit.jupiter.api.Test;
 
-import static factories.ConstraintFactory.INF;
-import static factories.ConstraintFactory.binaryConstraint;
-import static factories.VariableFactory.createOneVar;
+import static definition.factories.ConstraintFactory.INF;
+import static definition.factories.ConstraintFactory.binaryConstraint;
+import static definition.factories.VariableFactory.createOneVar;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

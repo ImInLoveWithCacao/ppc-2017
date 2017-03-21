@@ -48,18 +48,15 @@ public class Variable {
         this.dom = d;
     }
 
+    public Domain cloneDomain() {
+        return getDomain().clone();
+    }
+
     /**
      * @return true ssi la variable est instanciée.
      */
     boolean isInstantiated() {
         return this.dom.size() == 1;
-    }
-
-    /**
-     * @return true ssi le domaine de la variable contient la valeur v.
-     */
-    public boolean canBeInstantiatedTo(int v) {
-        return this.dom.contains(v);
     }
 
     /**

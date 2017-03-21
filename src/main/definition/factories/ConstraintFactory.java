@@ -1,4 +1,4 @@
-package factories;
+package definition.factories;
 
 
 import definition.*;
@@ -11,8 +11,12 @@ public class ConstraintFactory {
     public static final String DIFF = "!=";
 
     public static Constraint[] chainInferior(Variable[] vars) {
+        return chainInferior(vars, true);
+    }
+
+    public static Constraint[] chainInferior(Variable[] vars, boolean strict) {
         return IntStream.range(0, vars.length - 1)
-                       .mapToObj(i -> binaryConstraint(vars[i], INF, vars[i + 1]))
+                       .mapToObj(i -> binaryConstraint(vars[i], strict ? INF : INF_EQ, vars[i + 1]))
                        .toArray(Constraint[]::new);
     }
 

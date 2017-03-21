@@ -21,6 +21,7 @@ public class Solution {
     }
 
     public String toString() {
-        return String.join("; ", solutions.entrySet().stream().map(Entry::toString).toArray(String[]::new));
+        return "{".concat(String.join("; ", solutions.entrySet().stream().map(Entry::toString).toArray(String[]::new)))
+                       .concat("}");
     }
 }

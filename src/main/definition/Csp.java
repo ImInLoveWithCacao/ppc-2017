@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static factories.VariableFactory.createOneVar;
+import static definition.factories.VariableFactory.createOneVar;
 
 
 public class Csp {
@@ -52,7 +52,7 @@ public class Csp {
 
     public Variable smallestDomain() {
         Variable smallest = createOneVar(-1, 0, 99999);
-        for (Variable v : this.vars)
+        for (Variable v : getVars())
             if (!v.isInstantiated()
                     && v.getDomainSize() < smallest.getDomainSize())
                 smallest = v;
@@ -74,10 +74,7 @@ public class Csp {
     }
 
     public Domain[] cloneDomains() {
-        int nbVars = getNbVars();
-        Domain[] rep = new Domain[nbVars];
-        for (int i = 0; i < nbVars; i++) rep[i] = getVars()[i].getDomain().clone();
-        return rep;
+        return Arrays.stream(getVars()).map(Variable::cloneDomain).toArray(Domain[]::new);
     }
 
 	/**
@@ -116,15 +113,20 @@ public class Csp {
                        .collect(Collectors.toList());
     }
 
+
+    /**
+     * @param node reongzoeiroizrnvoizenzo
+     * @return
+     */
     public boolean necessary(Variable node) {
         Constraint[] cons = getConstraintsAsArray(node);
         for (Constraint c : cons)
             if (!c.isNecessary())
-				return false;
-		return true;
-	}
+                return false;
+        return true;
+    }
 
-	public String toString() {
+    public String toString() {
         final StringBuilder s = new StringBuilder("---Variables : \n");
         Arrays.stream(getVars()).forEach(v -> s.append(v).append("\n"));
         s.append("---Contraintes \n");

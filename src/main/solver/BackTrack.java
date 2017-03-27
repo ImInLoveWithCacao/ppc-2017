@@ -1,5 +1,6 @@
 package solver;
 
+import definition.Constraint;
 import definition.Csp;
 
 public class BackTrack extends BruteForce {
@@ -7,8 +8,11 @@ public class BackTrack extends BruteForce {
         super(name, csp);
     }
 
+    /**
+     * isNecessary
+     */
     @Override
     protected boolean isNodeConsistent() {
-        return csp.necessary(currentNode);
+        return csp.relatedConstraints(currentNode).allMatch(Constraint::isNecessary);
     }
 }

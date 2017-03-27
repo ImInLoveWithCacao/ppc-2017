@@ -19,8 +19,7 @@ class TestUtils {
         assertForGivenOptions(
             "question 1, n = " + maxDomainSize,
             generateQuestion1(maxDomainSize), expectedNbSols,
-            res -> System.out.println(res.data()),
-            options
+            res -> System.out.println(res.data()), options
         );
     }
 
@@ -53,13 +52,13 @@ class TestUtils {
         return new Csp(vars, cons);
     }
 
-    private static void assertForGivenOptions(String solverName, Csp csp,
-                                              int expectedNbSols, Consumer<SearchResult> printFunc, int... options) {
+    private static void assertForGivenOptions(String solverName, Csp csp, int expectedNbSols,
+                                              Consumer<SearchResult> resultsPrinter, int... options) {
         int nbSolsFound;
 
         for (int i : options) {
             SearchResult res = createSolver(i, solverName, csp).solve();
-            printFunc.accept(res);
+            resultsPrinter.accept(res);
             nbSolsFound = res.getNbSols();
             try {
                 assertEquals(nbSolsFound, expectedNbSols);
@@ -81,6 +80,7 @@ class TestUtils {
             "question 2.1 - #variables (n) = " + nbVariables,
             generateQ21(nbVariables)
         ).solve();
+        System.out.println(res.data());
         assertEquals(res.getNbSols(), 120);
     }
 

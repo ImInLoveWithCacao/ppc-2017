@@ -57,7 +57,7 @@ public abstract class Solver {
     }
 
     private void search() {
-        if (!csp.allInstanciated())
+        if (!csp.allInstantiated())
             fromNewVariable();
         else if (isSolution())
             saveSolution();
@@ -101,10 +101,10 @@ public abstract class Solver {
 
     private void instantiateAndSearchBranch(Variable var, Integer value) {
         setCurrentNode(var, value);
-        coreSearch(var, value);
+        coreSearch();
     }
 
-    void coreSearch(Variable var, Integer value) {
+    void coreSearch() {
         if (isNodeConsistent())
             search();
     }

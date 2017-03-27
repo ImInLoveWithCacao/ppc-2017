@@ -5,6 +5,8 @@ import definition.Variable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Map.Entry;
 
@@ -17,11 +19,11 @@ public class Solution {
     }
 
     Integer[] serialize() {
-        return solutions.values().stream().toArray(Integer[]::new);
+        return solutions.values().toArray(new Integer[0]);
     }
 
     public String toString() {
-        return "{".concat(String.join("; ", solutions.entrySet().stream().map(Entry::toString).toArray(String[]::new)))
-                       .concat("}");
+        Set<String> solutions = this.solutions.entrySet().stream().map(Entry::toString).collect(Collectors.toSet());
+        return "{".concat(String.join("; ", solutions)).concat("}");
     }
 }

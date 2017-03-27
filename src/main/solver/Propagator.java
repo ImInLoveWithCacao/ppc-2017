@@ -14,9 +14,9 @@ class Propagator {
     private boolean[] currentFilter;
 
     /**
-     * Vaut true si l'un des domaines a été vidé.
+     * Vaut false si l'un des domaines a été vidé.
      */
-    private boolean arcsAreConsistant;
+    private boolean arcsAreConsistent;
 
     /**
      * Un tableau de nbVariables boolean. L'élément i vaut true ssi son domaine a
@@ -36,17 +36,16 @@ class Propagator {
         this.currentNode = currentNode;
         savedDomains = csp.cloneDomains();
         activeConstraints = new LinkedList<>();
-        arcsAreConsistant = true;
+        arcsAreConsistent = true;
         changedDomains = new IterableBitSet();
-    }
-
-
-    boolean areArcsConsistent() {
-        return arcsAreConsistant;
     }
 
     IterableBitSet changedDomains() {
         return changedDomains;
+    }
+
+    boolean areArcsConsistent() {
+        return arcsAreConsistent;
     }
 
     private boolean canStillPropagate() {
@@ -70,21 +69,32 @@ class Propagator {
 
     /**
      * Lance le filtrage du Csp avec pour point de départ la variable var. Et effectue la
-     * propagation à travers les contraintes qui concernet les variables dont le domaine
+     * propagation à travers les contraintes qui concernent les variables dont le domaine
      * a été réduit par un filtrage.
+     * S'arrête si un filtrage vide un domaine.
      */
     void propagateFromCurrentNode() {
         csp.relatedConstraints(currentNode).forEach(activeConstraints::add);
 
-        while (canStillPropagate() && arcsAreConsistant)
-            startPropagation();
+        while (canStillPropagate())
+            if (propagationBreaksConsistency()) break;
     }
 
-    private void startPropagation() {
+    private boolean propagationBreaksConsistency() {
+        try {
+            trigger();
+        } catch (ConsistencyException e) {
+            arcsAreConsistent = false;
+            return true;
+        }
+        return false;
+    }
+
+    private void trigger() throws ConsistencyException {
         setCurrentConstraint(activeConstraints.poll());
         setCurrentFilter(currentConstraint.filter());
 
-        if (currentFilter[0]) arcsAreConsistant = false;
+        if (currentFilter[0]) throw new ConsistencyException();
         else propagate();
     }
 
@@ -106,11 +116,14 @@ class Propagator {
 
     private void addActivatedConstraints(Variable modifiedVariable) {
         csp.relatedConstraints(modifiedVariable)
-            .filter(this::hasJustBeenModified)
+            .filter(this::isNotActiveYet)
             .forEach(activeConstraints::add);
     }
 
-    private boolean hasJustBeenModified(Constraint c) {
+    private boolean isNotActiveYet(Constraint c) {
         return !c.equals(currentConstraint) && !activeConstraints.contains(c);
     }
+}
+
+class ConsistencyException extends Exception {
 }

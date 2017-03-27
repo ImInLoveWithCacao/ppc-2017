@@ -30,7 +30,7 @@ public class SearchResult {
     }
 
     public void timerEnd() {
-        if (time != 0) time = System.nanoTime() - time;
+        time = System.nanoTime() - time;
     }
 
     public void addNode() {

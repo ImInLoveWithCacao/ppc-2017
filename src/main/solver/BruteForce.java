@@ -14,8 +14,14 @@ public class BruteForce extends Solver {
         return true;
     }
 
+    /**
+     * @return la premiere variable non instanciee du csp.
+     */
     @Override
     protected Variable choseNextVar() {
-        return csp.randomVar();
+        for (Variable v : csp.getVars())
+            if (!v.isInstantiated())
+                return v;
+        return null;
     }
 }

@@ -9,7 +9,7 @@ public class ConstraintInf extends Constraint {
     @Override
     public boolean isSatisfied() {
         Variable[] vars = getVars();
-        return (areInstanciated() && (vars[0].getValue() < vars[1].getValue()));
+        return (areInstantiated() && (vars[0].getValue() < vars[1].getValue()));
     }
 
     @Override

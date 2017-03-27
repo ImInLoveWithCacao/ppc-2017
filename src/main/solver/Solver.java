@@ -56,7 +56,7 @@ public abstract class Solver {
         return result;
     }
 
-    private void search() {
+    protected void search() {
         if (!csp.allInstantiated())
             fromNewVariable();
         else if (isSolution())
@@ -104,10 +104,7 @@ public abstract class Solver {
         coreSearch();
     }
 
-    void coreSearch() {
-        if (isNodeConsistent())
-            search();
-    }
+    abstract void coreSearch();
 
     /**
      * Instancie la variable à la valeur value, sauvegarde la visite d'un nouveau noeud,

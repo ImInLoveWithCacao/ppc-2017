@@ -24,4 +24,9 @@ public class BruteForce extends Solver {
                 return v;
         return null;
     }
+
+    void coreSearch() {
+        if (isNodeConsistent())
+            search();
+    }
 }

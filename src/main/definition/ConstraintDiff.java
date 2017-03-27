@@ -1,5 +1,7 @@
 package definition;
 
+import java.util.Arrays;
+
 public class ConstraintDiff extends Constraint {
 
 
@@ -32,7 +34,7 @@ public class ConstraintDiff extends Constraint {
 
     public boolean equals(Object o) {
         return (o instanceof ConstraintDiff)
-            && ((ConstraintDiff) o).getVars().equals(getVars());
+            && Arrays.equals(((ConstraintDiff) o).getVars(), getVars());
     }
 
     public String toString() {

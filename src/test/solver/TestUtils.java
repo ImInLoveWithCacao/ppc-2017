@@ -3,7 +3,9 @@ package solver;
 import definition.Constraint;
 import definition.Csp;
 import definition.Variable;
+import tools.SearchResult;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import static definition.factories.ConstraintFactory.*;
@@ -15,14 +17,15 @@ import static solver.Solver.createSolver;
 class TestUtils {
     static void assertQueston1(int maxDomainSize, int expectedNbSols, int... options) {
         assertForGivenOptions(
-                "question 1, n=" + maxDomainSize,
-                generateQuestion1(maxDomainSize),
-                expectedNbSols, options
+            "question 1, n = " + maxDomainSize,
+            generateQuestion1(maxDomainSize), expectedNbSols,
+            res -> System.out.println(res.data()),
+            options
         );
     }
 
 
-    static Csp generateQuestion1(int maxD) {
+    private static Csp generateQuestion1(int maxD) {
         Variable[] vars = createVariables(10, 1, maxD);
         Variable x0 = vars[0];
         Variable x1 = vars[1];
@@ -50,36 +53,44 @@ class TestUtils {
         return new Csp(vars, cons);
     }
 
-    private static void assertForGivenOptions(String solverName, Csp csp, int expectedNbSols, int... options) {
+    private static void assertForGivenOptions(String solverName, Csp csp,
+                                              int expectedNbSols, Consumer<SearchResult> printFunc, int... options) {
         int nbSolsFound;
 
         for (int i : options) {
-            nbSolsFound = createSolver(i, solverName, csp).solve().getNbSols();
+            SearchResult res = createSolver(i, solverName, csp).solve();
+            printFunc.accept(res);
+            nbSolsFound = res.getNbSols();
             try {
                 assertEquals(nbSolsFound, expectedNbSols);
             } catch (AssertionError e) {
                 throw new AssertionError(
-                                                "\n----------- ".concat(solverName).concat(" -----------\n")
-                                                        .concat("Solver type ").concat("" + i)
-                                                        .concat(" didn't find the correct number of solutions.\n")
-                                                        .concat("expected: ").concat("" + expectedNbSols).concat("\n")
-                                                        .concat("actual: ").concat("" + nbSolsFound).concat("\n")
+                    "\n----------- ".concat(solverName).concat(" -----------\n")
+                        .concat("Solver type ").concat("" + i)
+                        .concat(" didn't find the correct number of solutions.\n")
+                        .concat("expected: ").concat("" + expectedNbSols).concat("\n")
+                        .concat("actual: ").concat("" + nbSolsFound).concat("\n")
                 );
             }
         }
     }
 
     static void assertQuestion21(int nbVariables) {
-        assertEquals(createSolver(WITHFILTER, "question 2.1", generateQ21(nbVariables)).solve().getNbSols(), 120);
+        SearchResult res = createSolver(
+            WITHFILTER,
+            "question 2.1 - #variables (n) = " + nbVariables,
+            generateQ21(nbVariables)
+        ).solve();
+        assertEquals(res.getNbSols(), 120);
     }
 
     private static Csp generateQ21(int nb) {
         final Variable[] vars = createVariables(nb, 1, 10);
         return new Csp(
-                              vars,
-                              IntStream.range(0, nb + 2)
-                                      .mapToObj(i -> constraintFeeder(nb, vars, i))
-                                      .toArray(Constraint[]::new)
+            vars,
+            IntStream.range(0, nb + 2)
+                .mapToObj(i -> constraintFeeder(nb, vars, i))
+                .toArray(Constraint[]::new)
         );
     }
 

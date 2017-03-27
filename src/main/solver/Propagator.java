@@ -1,9 +1,6 @@
 package solver;
 
-import definition.Constraint;
-import definition.Csp;
-import definition.Domain;
-import definition.Variable;
+import definition.*;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,13 +16,13 @@ class Propagator {
     /**
      * Vaut true si l'un des domaines a été vidé.
      */
-    private boolean arcConsistency;
+    private boolean arcsAreConsistant;
 
     /**
      * Un tableau de nbVariables boolean. L'élément i vaut true ssi son domaine a
      * changé lors de la propagation.
      */
-    private Boolean[] changedDomains;
+    private IterableBitSet changedDomains;
 
     /**
      * Contient les contraintes que la propagation du filtrage va activer.
@@ -39,15 +36,16 @@ class Propagator {
         this.currentNode = currentNode;
         savedDomains = csp.cloneDomains();
         activeConstraints = new LinkedList<>();
-        arcConsistency = true;
+        arcsAreConsistant = true;
+        changedDomains = new IterableBitSet();
     }
 
 
     boolean areArcsConsistent() {
-        return arcConsistency;
+        return arcsAreConsistant;
     }
 
-    Boolean[] changedDomains() {
+    IterableBitSet changedDomains() {
         return changedDomains;
     }
 
@@ -67,11 +65,7 @@ class Propagator {
      * Restore les domaines à leur état d'avant le filtrage.
      */
     void restoreDomains() {
-        IntStream.range(0, csp.getNbVars()).forEach(
-                i -> {
-                    if (changedDomains[i]) csp.getVars()[i].setDomain(savedDomains[i]);
-                }
-        );
+        changedDomains.forEach(i -> csp.getVars()[i].setDomain(savedDomains[i]));
     }
 
     /**
@@ -80,44 +74,43 @@ class Propagator {
      * a été réduit par un filtrage.
      */
     void propagateFromCurrentNode() {
-        prepareDomains();
-        activeConstraints.addAll(csp.getConstraintsAsArrayList(currentNode));
+        csp.relatedConstraints(currentNode).forEach(activeConstraints::add);
 
-        while (canStillPropagate() && arcConsistency)
+        while (canStillPropagate() && arcsAreConsistant)
             startPropagation();
-    }
-
-
-    private void prepareDomains() {
-        changedDomains = IntStream.range(0, csp.getNbVars()).mapToObj(i -> false).toArray(Boolean[]::new);
     }
 
     private void startPropagation() {
         setCurrentConstraint(activeConstraints.poll());
         setCurrentFilter(currentConstraint.filter());
 
-        if (currentFilter[0]) arcConsistency = false;
+        if (currentFilter[0]) arcsAreConsistant = false;
         else propagate();
     }
 
     private void propagate() {
-        IntStream.range(0, currentFilter.length).forEach(
-                i -> {
-                    if (currentFilter[i]) activateVariable(currentConstraint.getVars()[i - 1]);
-                }
-        );
+        IntStream.range(0, currentFilter.length)
+            .filter(i -> currentFilter[i])
+            .mapToObj(this::getAssociatedVariable)
+            .forEach(this::addToPropagationQueue);
     }
 
-    private void activateVariable(Variable var) {
-        changedDomains[var.getInd()] = true;
+    private Variable getAssociatedVariable(int i) {
+        return currentConstraint.getVars()[i - 1];
+    }
+
+    private void addToPropagationQueue(Variable var) {
+        changedDomains.addValue(var.getInd());
         addActivatedConstraints(var);
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
-        csp.getConstraintsAsArrayList(modifiedVariable).forEach(
-                c -> {
-                    if (!c.equals(currentConstraint) && !activeConstraints.contains(c)) activeConstraints.add(c);
-                }
-        );
+        csp.relatedConstraints(modifiedVariable)
+            .filter(this::hasJustBeenModified)
+            .forEach(activeConstraints::add);
+    }
+
+    private boolean hasJustBeenModified(Constraint c) {
+        return !c.equals(currentConstraint) && !activeConstraints.contains(c);
     }
 }

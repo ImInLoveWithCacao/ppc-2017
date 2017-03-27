@@ -8,7 +8,7 @@ import static solver.TestUtils.assertQuestion21;
 import static solver.TestUtils.assertQueston1;
 
 
-public class Eval2016 {
+class Eval2016 {
     //---------------------QUESTION 1------------------------------------------------------
 
     @Test

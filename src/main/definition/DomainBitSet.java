@@ -1,74 +1,35 @@
 package definition;
+
 import java.util.BitSet;
-import java.util.Iterator;
 
-public class DomainBitSet implements Domain {
-
-    /**
-     * Un bitset represente le domaine (voir api java pour plus d'infos).
-     */
-    private BitSet values;
+public class DomainBitSet extends IterableBitSet implements Domain {
 
     /**
      * Construit un domaine dont les valeurs sont comprises entre min et max (inclus).
      */
     DomainBitSet(int min, int max) {
-        this.values = new BitSet();
-		this.values.set(min, max+1);
-	}
+        super(min, max);
+    }
 
     private DomainBitSet(BitSet set) {
-        this.values = set;
-	}
-
-	public DomainBitSet clone() {
-		BitSet newB = new BitSet();
-		newB.or(values);
-		return new DomainBitSet(newB);
-	}
-
-    /**
-     * @return la taille du domaine, ie le nombre de valeurs dans le domaine.
-     */
-    public int size() {
-		return this.values.cardinality();
-	}
-
-    public int firstValue() {
-		return values.nextSetBit(0);
-	}
-
-    public int lastValue() {
-        return values.length() - 1;
+        super(set);
     }
 
-	public String toString() {
-		return this.values.toString();
-	}
-
-	public Iterator<Integer> iterator() {
-        return new BitSetIterator(values);
+    public DomainBitSet clone() {
+        BitSet newB = new BitSet();
+        newB.or(values);
+        return new DomainBitSet(newB);
     }
 
-	public boolean contains(int v) {
-        return values.nextSetBit(v) == v;
+    public boolean remove(int v) {
+        boolean rep = values.get(v);
+        values.clear(v);
+        return rep;
     }
 
-	public boolean remove(int v) {
-		boolean rep = values.get(v);
-		values.clear(v);
-		return rep;
-	}
-
-	public void fix(int v) {
-		values.clear(0, values.size() - 1);
-		values.set(v);
-	}
-
-    public boolean equals(Object o) {
-        return (o instanceof Domain)
-                && ((Domain) o).firstValue() == firstValue()
-                && ((Domain) o).lastValue() == lastValue();
+    public void fix(int v) {
+        values.clear(0, values.size() - 1);
+        values.set(v);
     }
 
 }

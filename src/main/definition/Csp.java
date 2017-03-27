@@ -3,8 +3,7 @@ package definition;
 import tools.Solution;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static definition.factories.VariableFactory.createOneVar;
 
@@ -103,14 +102,11 @@ public class Csp {
      * @return un array contenant les constraintes du Csp concernées par var.
      */
     private Constraint[] getConstraintsAsArray(Variable var) {
-        List<Constraint> list = getConstraintsAsArrayList(var);
-        return list.toArray(new Constraint[list.size()]);
+        return relatedConstraints(var).toArray(Constraint[]::new);
     }
 
-    public List<Constraint> getConstraintsAsArrayList(Variable var) {
-        return Arrays.stream(getConstraints())
-                       .filter(c -> c.affects(var))
-                       .collect(Collectors.toList());
+    public Stream<Constraint> relatedConstraints(Variable var) {
+        return Arrays.stream(getConstraints()).filter(c -> c.affects(var));
     }
 
 

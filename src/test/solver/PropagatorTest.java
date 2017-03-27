@@ -2,17 +2,17 @@ package solver;
 
 import definition.Constraint;
 import definition.Csp;
+import definition.IterableBitSet;
 import definition.Variable;
 import org.junit.jupiter.api.Test;
 
 import static definition.factories.ConstraintFactory.INF;
 import static definition.factories.ConstraintFactory.binaryConstraint;
 import static definition.factories.VariableFactory.createOneVar;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PropagatorTest {
-    private final Boolean[] propTest = new Boolean[]{true, true, false};
+    private final IterableBitSet propTest = new IterableBitSet(0, 1);
 
     @Test
     void it_propagates_correctly() {
@@ -25,7 +25,7 @@ class PropagatorTest {
         Propagator p = new Propagator(new Csp(new Variable[]{x0, x1, x2}, new Constraint[]{c1, c2}), x2);
 
         p.propagateFromCurrentNode();
-        assertArrayEquals(propTest, p.changedDomains());
+        assertEquals(propTest, p.changedDomains());
         assertEquals(1, x1.getDomain().lastValue());
         assertEquals(0, x0.getDomain().lastValue());
     }

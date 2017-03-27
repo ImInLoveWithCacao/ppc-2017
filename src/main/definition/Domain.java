@@ -7,8 +7,6 @@ public interface Domain extends Iterable<Integer>, Cloneable {
 
     int size();
 
-    boolean contains(int v);
-
     int firstValue();
 
     int lastValue();

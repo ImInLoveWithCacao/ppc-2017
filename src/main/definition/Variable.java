@@ -69,7 +69,10 @@ public class Variable {
 
     @Override
     public boolean equals(Object o) {
-        return this == o || !(o == null || getClass() != o.getClass()) && Objects.equals(dom, ((Variable) o).dom);
+        return ((o instanceof Variable)
+            && ((Variable) o).getInd() == getInd()
+            && ((Variable) o).getName().equals(getName()))
+            && ((Variable) o).getDomain().equals(getDomain());
     }
 
     @Override

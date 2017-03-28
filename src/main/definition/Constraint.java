@@ -59,15 +59,4 @@ public abstract class Constraint {
     }
 
     public abstract String toString();
-
-    @Override
-    public boolean equals(Object o) {
-        return this == o ||
-            !(o == null || getClass() != o.getClass()) && Arrays.equals(variables, ((Constraint) o).variables);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(variables);
-    }
 }

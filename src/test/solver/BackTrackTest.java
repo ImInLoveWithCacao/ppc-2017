@@ -15,7 +15,7 @@ import static solver.Solver.BACKTRACK;
 import static solver.TestUtils.mockSearchResult;
 
 class BackTrackTest {
-    static final Variable[][] problem1Sols = {
+    private static final Variable[][] problem1Sols = {
         new Variable[]{
             createOneVar(0, 0, 0),
             createOneVar(1, 1, 1),
@@ -39,6 +39,13 @@ class BackTrackTest {
         }
     };
 
+    private static final Variable[][] problem2Sol = {
+        successive(2),
+        new Variable[]{
+            createOneVar(0, 1, 1),
+            createOneVar(1, 0, 0)
+        }
+    };
 
     @Test
     void it_stops_when_necessary() {
@@ -51,6 +58,7 @@ class BackTrackTest {
     void simple_problem() {
         Variable[] vars = createVariables(3, 0, 2);
         Constraint[] cons = chainInferior(vars);
+
         assertResultsEqual(vars, cons, mockSearchResult(12, new Solution(successive(3))));
     }
 
@@ -59,19 +67,21 @@ class BackTrackTest {
         Variable[] vars = createVariables(3, 0, 2);
         Constraint[] cons = new Constraint[]{
             binaryConstraint(vars[0], INF, vars[1]),
-            binaryConstraint(vars[0], INF, vars[2])
-        };
-        assertResultsEqual(
-            vars, cons,
-            mockSearchResult(18, Arrays.stream(problem1Sols).map(Solution::new).toArray(Solution[]::new))
-        );
+            binaryConstraint(vars[0], INF, vars[2])};
+
+        assertResultsEqual(vars, cons,
+            mockSearchResult(18, Arrays.stream(problem1Sols).map(Solution::new).toArray(Solution[]::new)));
+    }
+
+    @Test
+    void problem_2() {
+        Variable[] vars = createVariables(2, 0, 1);
+        Constraint[] cons = {binaryConstraint(vars[0], DIFF, vars[1])};
+        assertResultsEqual(vars, cons,
+            mockSearchResult(6, Arrays.stream(problem2Sol).map(Solution::new).toArray(Solution[]::new)));
     }
 
     private void assertResultsEqual(Variable[] vars, Constraint[] cons, SearchResult searchResult) {
-        TestUtils.assertResultsEqual(
-            BACKTRACK,
-            new Csp(vars, cons),
-            searchResult
-        );
+        TestUtils.assertResultsEqual(BACKTRACK, new Csp(vars, cons), searchResult);
     }
 }

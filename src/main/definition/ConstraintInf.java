@@ -42,11 +42,6 @@ public class ConstraintInf extends Constraint {
         return new boolean[]{(supv1 == -1 || infv2 == -1), rep1, rep2};
     }
 
-    public boolean equals(Object o) {
-        return (o instanceof ConstraintInf)
-                       && ((ConstraintInf) o).getVars().equals(getVars());
-    }
-
     public String toString() {
         return (getVars()[0].getName() + " < " + getVars()[1].getName());
     }

@@ -1,5 +1,7 @@
 package definition;
 
+import java.util.Objects;
+
 public class Variable {
     private int idx;
     private String name;
@@ -65,11 +67,14 @@ public class Variable {
         return isInstantiated() ? getInf() : -1;
     }
 
+    @Override
     public boolean equals(Object o) {
-        return ((o instanceof Variable)
-            && ((Variable) o).getInd() == getInd()
-            && ((Variable) o).getName().equals(getName()))
-            && ((Variable) o).getDomain().equals(getDomain());
+        return this == o || !(o == null || getClass() != o.getClass()) && Objects.equals(dom, ((Variable) o).dom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dom);
     }
 
     public String toString() {

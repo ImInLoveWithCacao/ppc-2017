@@ -2,6 +2,7 @@ package tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchResult {
     private String functionName;
@@ -39,6 +40,21 @@ public class SearchResult {
 
     public int getNbSols() {
         return nbSols;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SearchResult that = (SearchResult) o;
+        return nodes == that.nodes &&
+            getNbSols() == that.getNbSols() &&
+            Objects.equals(solutions, that.solutions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nodes, getNbSols(), solutions);
     }
 
     public void addSol(Solution sol) {

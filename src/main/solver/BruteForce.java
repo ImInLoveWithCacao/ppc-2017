@@ -19,12 +19,10 @@ public class BruteForce extends Solver {
      */
     @Override
     protected Variable choseNextVar() {
-        for (Variable v : csp.getVars())
-            if (!v.isInstantiated())
-                return v;
-        return null;
+        return csp.streamUninstantiated().findFirst().get();
     }
 
+    @Override
     void coreSearch() {
         if (isNodeConsistent())
             search();

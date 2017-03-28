@@ -26,4 +26,19 @@ public class Solution {
         Set<String> solutions = this.solutions.entrySet().stream().map(Entry::toString).collect(Collectors.toSet());
         return "{".concat(String.join("; ", solutions)).concat("}");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Solution solution = (Solution) o;
+
+        return solutions.equals(solution.solutions);
+    }
+
+    @Override
+    public int hashCode() {
+        return solutions.hashCode();
+    }
 }

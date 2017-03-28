@@ -3,7 +3,7 @@ package solver;
 import definition.Csp;
 import definition.Variable;
 
-import java.util.Comparator;
+import static java.util.Comparator.comparingInt;
 
 public class SmallestDomains extends WithFilter {
     SmallestDomains(String name, Csp csp) {
@@ -12,7 +12,6 @@ public class SmallestDomains extends WithFilter {
 
     @Override
     protected Variable choseNextVar() {
-        return csp.streamVars().filter(Variable::isNotInstantiated)
-            .min(Comparator.comparingInt(Variable::getDomainSize)).get();
+        return csp.streamUninstantiated().min(comparingInt(Variable::getDomainSize)).get();
     }
 }

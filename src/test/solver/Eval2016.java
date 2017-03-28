@@ -13,7 +13,7 @@ class Eval2016 {
 
     @Test
     void question_1_n_egal_5() {
-        assertQueston1(5, 107, BACKTRACK, WITHFILTER);
+        assertQueston1(5, 107, BACKTRACK);
     }
 
     @Test

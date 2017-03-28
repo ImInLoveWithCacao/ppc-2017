@@ -4,7 +4,9 @@ import definition.Constraint;
 import definition.Csp;
 import definition.Variable;
 import tools.SearchResult;
+import tools.Solution;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -108,5 +110,16 @@ class TestUtils {
             return binaryConstraint(vars[oneThird], "<", vars[2 * oneThird]);
         else
             return binaryConstraint(vars[i], "<=", vars[i + 1]);
+    }
+
+    static void assertResultsEqual(int type, Csp csp, SearchResult expected) {
+        assertEquals(createSolver(type, "actual", csp).solve(), expected);
+    }
+
+    static SearchResult mockSearchResult(int nbNodes, Solution... sols) {
+        SearchResult expected = new SearchResult("expected");
+        Arrays.stream(sols).forEach(expected::addSol);
+        IntStream.range(0, nbNodes).forEach(i -> expected.addNode());
+        return expected;
     }
 }

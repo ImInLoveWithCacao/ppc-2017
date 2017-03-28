@@ -5,7 +5,7 @@ import java.util.BitSet;
 public class DomainBitSet extends IterableBitSet implements Domain {
 
     /**
-     * Construit un domaine dont les valeurs sont comprises entre min et max (inclus).
+     * Les valeurs sont comprises entre min et max (inclus).
      */
     DomainBitSet(int min, int max) {
         super(min, max);

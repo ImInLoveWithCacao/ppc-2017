@@ -2,6 +2,7 @@ package definition;
 
 import java.util.BitSet;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class IterableBitSet implements Iterable<Integer> {
     /**
@@ -49,9 +50,16 @@ public class IterableBitSet implements Iterable<Integer> {
         values.set(v);
     }
 
-    public boolean equals(Object o) {
-        return (o instanceof IterableBitSet)
-            && ((IterableBitSet) o).firstValue() == firstValue()
-            && ((IterableBitSet) o).lastValue() == lastValue();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(values);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj ||
+            !(obj == null || getClass() != obj.getClass())
+                && Objects.equals(this.values, ((IterableBitSet) obj).values);
     }
 }

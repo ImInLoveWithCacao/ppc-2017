@@ -22,4 +22,7 @@ public interface Domain extends Iterable<Integer>, Cloneable {
     void fix(int v);
 
     Iterator<Integer> iterator();
+
+    @Override
+    int hashCode();
 }

@@ -3,7 +3,7 @@ package solver;
 import definition.Csp;
 import definition.Variable;
 
-import java.util.Comparator;
+import static java.util.Comparator.comparingDouble;
 
 public class SmallestRatio extends WithFilter {
     SmallestRatio(String name, Csp csp) {
@@ -12,8 +12,7 @@ public class SmallestRatio extends WithFilter {
 
     @Override
     protected Variable choseNextVar() {
-        return csp.streamVars().filter(Variable::isNotInstantiated)
-            .min(Comparator.comparingDouble(this::ratio)).get();
+        return csp.streamUninstantiated().min(comparingDouble(this::ratio)).get();
     }
 
     private double ratio(Variable var) {

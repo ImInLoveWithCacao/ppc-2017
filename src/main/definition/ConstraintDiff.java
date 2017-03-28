@@ -39,6 +39,6 @@ public class ConstraintDiff extends Constraint {
 
     public String toString() {
         Variable[] vars = getVars();
-        return (vars[0].getName() + " != " + vars[1].getName());
+        return (vars[0].getName().concat(" != ").concat(vars[1].getName()));
     }
 }

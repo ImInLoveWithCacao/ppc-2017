@@ -30,6 +30,10 @@ public class Csp {
         return Arrays.stream(getVars());
     }
 
+    public Stream<Variable> streamUninstantiated() {
+        return streamVars().filter(Variable::isNotInstantiated);
+    }
+
     public Domain[] cloneDomains() {
         return streamVars().map(Variable::cloneDomain).toArray(Domain[]::new);
     }

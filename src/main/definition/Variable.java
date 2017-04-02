@@ -69,15 +69,17 @@ public class Variable {
 
     @Override
     public boolean equals(Object o) {
-        return ((o instanceof Variable)
-            && ((Variable) o).getInd() == getInd()
-            && ((Variable) o).getName().equals(getName()))
-            && ((Variable) o).getDomain().equals(getDomain());
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Variable variable = (Variable) o;
+        return idx == variable.idx &&
+            Objects.equals(getName(), variable.getName()) &&
+            Objects.equals(dom, variable.dom);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dom);
+        return Objects.hash(idx, getName(), dom);
     }
 
     public String toString() {

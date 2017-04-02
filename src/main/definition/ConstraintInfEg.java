@@ -1,7 +1,5 @@
 package definition;
 
-import java.util.Arrays;
-
 public class ConstraintInfEg extends Constraint {
 
     public ConstraintInfEg(Variable v1, Variable v2) {
@@ -40,11 +38,6 @@ public class ConstraintInfEg extends Constraint {
             supv1 = v1.getSup();
         }
         return new boolean[]{(supv1 == -1 || infv2 == -1), rep1, rep2};
-    }
-
-    public boolean equals(Object o) {
-        return (o instanceof ConstraintInfEg)
-            && (Arrays.equals(((ConstraintInfEg) o).getVars(), getVars()));
     }
 
     public String toString() {

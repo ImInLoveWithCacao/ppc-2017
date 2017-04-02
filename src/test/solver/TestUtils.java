@@ -8,15 +8,18 @@ import tools.Solution;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static definition.factories.ConstraintFactory.*;
 import static definition.factories.VariableFactory.createVariables;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static solver.Solver.WITHFILTER;
 import static solver.Solver.createSolver;
 
-class TestUtils {
+public class TestUtils {
     static void assertQueston1(int maxDomainSize, int expectedNbSols, int... options) {
         assertForGivenOptions(
             "question 1, n = " + maxDomainSize,
@@ -121,5 +124,26 @@ class TestUtils {
         Arrays.stream(sols).forEach(expected::addSol);
         IntStream.range(0, nbNodes).forEach(i -> expected.addNode());
         return expected;
+    }
+
+    public static String domainsToString(Variable[]... vars) {
+        StringBuilder res = new StringBuilder();
+        Arrays.stream(vars).forEach(variables
+            -> Arrays.stream(variables).forEach(var -> res.append(var.getDomain().toString())));
+        return res.toString();
+    }
+
+    public static void assertGivesResults(Function<Constraint, Boolean> toTest, String operator, Boolean[] expected,
+                                          Stream<Variable[]> variables) {
+        assertArrayEquals(
+            expected,
+            variables.map(pair -> toTest.apply(binaryConstraint(pair[0], operator, pair[1])))
+                .toArray(Boolean[]::new)
+        );
+    }
+
+    public static void assertDomainsAfterFilterEqual(String operator, String expected, Variable[]... vars) {
+        Arrays.stream(vars).forEach(pair -> binaryConstraint(pair[0], operator, pair[1]).filter());
+        assertEquals(expected, domainsToString(vars));
     }
 }

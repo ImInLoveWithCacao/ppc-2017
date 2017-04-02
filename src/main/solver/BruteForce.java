@@ -9,7 +9,9 @@ public class BruteForce extends Solver {
         super(name, csp);
     }
 
-    @Override
+    /**
+     * Vérifie que les conditions décessaires aux contraintes sont satisfaite pour ce noeud et pour ce type de solver.
+     */
     protected boolean isNodeConsistent() {
         return true;
     }

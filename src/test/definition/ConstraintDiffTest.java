@@ -1,30 +1,37 @@
 package definition;
 
 import org.junit.jupiter.api.Test;
+import solver.TestUtils;
 
 import java.util.Arrays;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static definition.factories.ConstraintFactory.DIFF;
 import static definition.factories.ConstraintFactory.binaryConstraint;
-import static definition.factories.VariableFactory.createVariables;
-import static definition.factories.VariableFactory.successive;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static definition.factories.VariableFactory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static solver.TestUtils.domainsToString;
 
 class ConstraintDiffTest {
 
+    private static void assertGivesResults(Function<Constraint, Boolean> toTest, Boolean[] expected, Stream<Variable[]> actual) {
+        TestUtils.assertGivesResults(toTest, DIFF, expected, actual);
+    }
+
     @Test
     void isSatisfied() {
-        Variable[][] vars = {
-            createVariables(2, 0, 1),
-            successive(2),
-            createVariables(2, 0, 0)
-        };
-        assertArrayEquals(
+        assertGivesResults(
+            Constraint::isSatisfied,
+
             new Boolean[]{true, true, false},
-            Arrays.stream(vars)
-                .map(pair -> binaryConstraint(pair[0], DIFF, pair[1]).isSatisfied())
-                .toArray(Boolean[]::new));
+
+            Arrays.stream(new Variable[][]{
+                createVariables(2, 0, 1),
+                successive(2),
+                createVariables(2, 0, 0)
+            })
+        );
     }
 
     @Test
@@ -35,12 +42,13 @@ class ConstraintDiffTest {
         assertEquals(expected, domainsToString(vars));
     }
 
-    private String domainsToString(Variable[][] vars) {
-        StringBuilder res = new StringBuilder();
-        for (Variable[] var : vars)
-            for (Variable aVar : var)
-                res.append(aVar.getDomain().toString());
-        return res.toString();
+    @Test
+    void filter() {
+        Variable[] variables = createVariables(2, 0, 1);
+        Variable filtering = createOneVar(2, 0, 0);
+        binaryConstraint(filtering, DIFF, variables[0]).filter();
+        binaryConstraint(filtering, DIFF, variables[1]).filter();
+        assertEquals("{1}{1}{0}", domainsToString(variables, new Variable[]{filtering}));
     }
 
     @Test

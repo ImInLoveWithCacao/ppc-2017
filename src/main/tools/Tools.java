@@ -31,7 +31,7 @@ public class Tools {
     }
 
     static String convertFromNano(long nanotime) {
-        return new SimpleDateFormat("mmmm'm', ss's', SSSS'ms'").format(nanotime / 1000000);
+        return new SimpleDateFormat("mm'm', ss's', SSSS'ms'").format(nanotime / 1000000);
     }
 
 }

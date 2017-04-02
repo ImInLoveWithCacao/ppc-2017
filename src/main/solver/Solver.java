@@ -59,16 +59,8 @@ public abstract class Solver {
     protected void search() {
         if (!csp.allInstantiated())
             fromNewVariable();
-        else if (isSolution())
+        else if (csp.hasSolution())
             saveSolution();
-    }
-
-    /**
-     * Appelée quand toutes les Variables sont instanciées.
-     * @return true si toutes les contraintes sont satisfaites.
-     */
-    private boolean isSolution() {
-        return csp.hasSolution();
     }
 
     private void saveSolution() {
@@ -115,10 +107,4 @@ public abstract class Solver {
         result.addNode();
         currentNode = var;
     }
-
-    /**
-     * @return true ssi chaque variable a encore au moins une valeur réalisable (après instanciation).
-     */
-    protected abstract boolean isNodeConsistent();
-
 }

@@ -43,7 +43,7 @@ public class Csp {
     }
 
 	public boolean hasSolution() {
-        return streamConstraints().allMatch(Constraint::isSatisfied) && allInstantiated();
+        return streamConstraints().allMatch(Constraint::isSatisfied);
     }
 
     public Stream<Constraint> relatedConstraints(Variable var) {

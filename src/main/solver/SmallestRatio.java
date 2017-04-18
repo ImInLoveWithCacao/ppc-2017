@@ -12,7 +12,7 @@ public class SmallestRatio extends WithFilter {
 
     @Override
     protected Variable choseNextVar() {
-        return csp.streamUninstantiated().min(comparingDouble(this::ratio)).get();
+        return csp.streamUninstantiated().min(comparingDouble(this::ratio)).orElse(null);
     }
 
     private double ratio(Variable var) {

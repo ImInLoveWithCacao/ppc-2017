@@ -24,7 +24,7 @@ public abstract class Constraint {
         return streamVars().allMatch(Variable::isInstantiated);
     }
 
-    private Stream<Variable> streamVars() {
+    protected Stream<Variable> streamVars() {
         return Arrays.stream(getVars());
     }
 
@@ -59,4 +59,17 @@ public abstract class Constraint {
     }
 
     public abstract String toString();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Constraint that = (Constraint) o;
+        return Arrays.equals(variables, that.variables);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(variables);
+    }
 }

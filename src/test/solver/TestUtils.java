@@ -16,7 +16,6 @@ import static definition.factories.ConstraintFactory.*;
 import static definition.factories.VariableFactory.createVariables;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static solver.Solver.WITHFILTER;
 import static solver.Solver.createSolver;
 
 public class TestUtils {
@@ -79,14 +78,16 @@ public class TestUtils {
         }
     }
 
-    static void assertQuestion21(int nbVariables) {
-        SearchResult res = createSolver(
-            WITHFILTER,
-            "question 2.1 - #variables (n) = " + nbVariables,
-            generateQ21(nbVariables)
-        ).solve();
-        System.out.println(res.data());
-        assertEquals(res.getNbSols(), 120);
+    static void assertQuestion21(int nbVariables, int... solverTypes) {
+        Arrays.stream(solverTypes).forEach(type -> {
+            SearchResult res = createSolver(
+                type,
+                "question 2.1 - solver type : " + type + " - #variables (n) = " + nbVariables,
+                generateQ21(nbVariables)
+            ).solve();
+            System.out.println(res.data());
+            assertEquals(res.getNbSols(), 120);
+        });
     }
 
     private static Csp generateQ21(int nb) {

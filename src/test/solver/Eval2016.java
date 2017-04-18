@@ -1,9 +1,9 @@
 package solver;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 
-import static solver.Solver.BACKTRACK;
-import static solver.Solver.WITHFILTER;
+import static solver.Solver.*;
 import static solver.TestUtils.assertQuestion21;
 import static solver.TestUtils.assertQueston1;
 
@@ -23,29 +23,30 @@ class Eval2016 {
 
     @Test
     void question1_n_egal_7() {
-        assertQueston1(7, 11024, WITHFILTER);
+        assertQueston1(7, 11024, SMALLESTRATIO);
     }
 
     //------------------QUESTION 2---------------------------------------
 
     @Test
     void question_2_1_n_egal_10() {
-        assertQuestion21(10);
+        assertQuestion21(10, WITHFILTER);
     }
 
     @Test
     void question_2_1_n_egal_100() {
-        assertQuestion21(100);
+        assertQuestion21(100, WITHFILTER);
     }
 
     @Test
     void question_2_1_n_egal_1000() {
-        assertQuestion21(1000);
+        assertQuestion21(1000, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
     }
 
+    @Ignore
     @Test
     void question_2_1_n_egal_10000() {
-        assertQuestion21(10000);
+        assertQuestion21(10000, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
     }
 
 }

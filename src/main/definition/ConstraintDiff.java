@@ -1,7 +1,8 @@
 package definition;
 
-public class ConstraintDiff extends Constraint {
+import static java.util.stream.Collectors.joining;
 
+public class ConstraintDiff extends Constraint {
 
     public ConstraintDiff(Variable v1, Variable v2) {
         super(new Variable[]{v1, v2});
@@ -17,6 +18,10 @@ public class ConstraintDiff extends Constraint {
         return isSatisfied();
     }
 
+    public String toString() {
+        return streamVars().map(Variable::toString).collect(joining(" != "));
+    }
+
     @Override
     public boolean[] filter() {
         boolean rep1 = false;
@@ -28,10 +33,5 @@ public class ConstraintDiff extends Constraint {
         if (v1.isInstantiated()) rep2 = d2.remove(v1.getValue());
         else if (v2.isInstantiated()) rep1 = d1.remove(v2.getValue());
         return new boolean[]{(d1.size() == 0 || d2.size() == 0), rep1, rep2};
-    }
-
-    public String toString() {
-        Variable[] vars = getVars();
-        return (vars[0].getName().concat(" != ").concat(vars[1].getName()));
     }
 }

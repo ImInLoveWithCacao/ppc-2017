@@ -21,7 +21,7 @@ public class BruteForce extends Solver {
      */
     @Override
     protected Variable choseNextVar() {
-        return csp.streamUninstantiated().findFirst().get();
+        return csp.streamUninstantiated().findFirst().orElse(null);
     }
 
     @Override

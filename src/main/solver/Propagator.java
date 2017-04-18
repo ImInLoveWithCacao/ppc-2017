@@ -73,7 +73,7 @@ class Propagator {
      * a été réduit par un filtrage.
      * S'arrête si un filtrage vide un domaine.
      */
-    void propagateFromCurrentNode() {
+    void propagate() {
         csp.relatedConstraints(currentNode).forEach(activeConstraints::add);
 
         while (canStillPropagate())
@@ -95,10 +95,10 @@ class Propagator {
         setCurrentFilter(currentConstraint.filter());
 
         if (currentFilter[0]) throw new ConsistencyException();
-        else propagate();
+        else addNewConstraintsToQueue();
     }
 
-    private void propagate() {
+    private void addNewConstraintsToQueue() {
         IntStream.range(0, currentFilter.length)
             .filter(i -> currentFilter[i])
             .mapToObj(this::getAssociatedVariable)

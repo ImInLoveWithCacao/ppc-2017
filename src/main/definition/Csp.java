@@ -38,10 +38,6 @@ public class Csp {
         return streamVars().map(Variable::cloneDomain).toArray(Domain[]::new);
     }
 
-    public boolean allInstantiated() {
-        return streamVars().allMatch(Variable::isInstantiated);
-    }
-
 	public boolean hasSolution() {
         return streamConstraints().allMatch(Constraint::isSatisfied);
     }

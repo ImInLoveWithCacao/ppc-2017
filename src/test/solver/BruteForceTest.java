@@ -7,12 +7,12 @@ import org.junit.jupiter.api.Test;
 import tools.Solution;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import static definition.factories.ConstraintFactory.INF;
 import static definition.factories.ConstraintFactory.binaryConstraint;
 import static definition.factories.VariableFactory.createOneVar;
 import static definition.factories.VariableFactory.createVariables;
+import static java.util.stream.IntStream.range;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static solver.Solver.*;
@@ -34,8 +34,7 @@ class BruteForceTest {
     void it_selects_first_uninstantiated_variable() {
         assertAllPickFirst(
             new Variable[]{createOneVar(0, 0, 0), createOneVar(1, 0, 1)},
-            1, BRUTEFORCE, BACKTRACK, WITHFILTER
-        );
+            1, BRUTEFORCE, BACKTRACK, WITHFILTER);
     }
 
     private void assertAllPickFirst(Variable[] variables, int actualIndex, int... options) {
@@ -44,21 +43,19 @@ class BruteForceTest {
                 int expected = createSolver(i, "Variable selection test ".concat("option " + i),
                     variables).choseNextVar().getInd();
                 assertEquals(expected, actualIndex);
-            }
-        );
+            });
     }
 
     @Test
     void it_searches_all_nodes() {
         Variable[] vars = createVariables(2, 0, 1);
         Constraint[] cons = new Constraint[]{binaryConstraint(vars[0], INF, vars[1])};
-        assertResultsEqual(
-            BRUTEFORCE,
-            new Csp(vars, cons),
+        assertResultsEqual(BRUTEFORCE, new Csp(vars, cons),
             mockSearchResult(6,
                 new Solution(new Variable[]{
                     createOneVar(0, 0, 0), createOneVar(1, 1, 1)
-                }))
+                })
+            )
         );
     }
 
@@ -80,8 +77,7 @@ class BruteForceTest {
                 createVariables(2, 0, 1)
         ).solve().serializedSolutions();
 
-        IntStream.range(0, sols.length)
-                .forEach(i -> assertArrayEquals(noConstraintsSolution[i], sols[i]));
+        range(0, sols.length).forEach(i -> assertArrayEquals(noConstraintsSolution[i], sols[i]));
     }
 
     @Test

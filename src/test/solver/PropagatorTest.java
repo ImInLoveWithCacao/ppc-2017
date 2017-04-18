@@ -24,7 +24,7 @@ class PropagatorTest {
 
         Propagator p = new Propagator(new Csp(new Variable[]{x0, x1, x2}, new Constraint[]{c1, c2}), x2);
 
-        p.propagateFromCurrentNode();
+        p.propagate();
         assertEquals(propTest, p.changedDomains());
         assertEquals(1, x1.getDomain().lastValue());
         assertEquals(0, x0.getDomain().lastValue());

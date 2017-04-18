@@ -1,5 +1,7 @@
 package definition;
 
+import static java.util.stream.Collectors.joining;
+
 public class ConstraintInf extends Constraint {
 
     public ConstraintInf(Variable v1, Variable v2) {
@@ -8,14 +10,16 @@ public class ConstraintInf extends Constraint {
 
     @Override
     public boolean isSatisfied() {
-        Variable[] vars = getVars();
-        return (areInstantiated() && (vars[0].getValue() < vars[1].getValue()));
+        return (areInstantiated() && (getVars()[0].getValue() < getVars()[1].getValue()));
     }
 
     @Override
     public boolean isNecessary() {
-        Variable[] vars = getVars();
-        return (vars[1].getSup() > vars[0].getInf());
+        return (getVars()[1].getSup() > getVars()[0].getInf());
+    }
+
+    public String toString() {
+        return streamVars().map(Variable::toString).collect(joining(" < "));
     }
 
     @Override
@@ -41,9 +45,4 @@ public class ConstraintInf extends Constraint {
         }
         return new boolean[]{(supv1 == -1 || infv2 == -1), rep1, rep2};
     }
-
-    public String toString() {
-        return (getVars()[0].getName() + " < " + getVars()[1].getName());
-    }
-
 }

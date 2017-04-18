@@ -10,6 +10,8 @@ public abstract class Solver {
     static final int BRUTEFORCE = 0;
     static final int BACKTRACK = 1;
     static final int WITHFILTER = 2;
+    static final int SMALLESTDOMAINS = 3;
+    static final int SMALLESTRATIO = 4;
 
     Csp csp;
     Variable currentNode;
@@ -34,6 +36,10 @@ public abstract class Solver {
 
     static Solver createSolver(int type, String name, Csp csp) {
         switch (type) {
+            case SMALLESTRATIO:
+                return new SmallestRatio(name, csp);
+            case SMALLESTDOMAINS:
+                return new SmallestDomains(name, csp);
             case WITHFILTER:
                 return new WithFilter(name, csp);
             case BACKTRACK:
@@ -57,23 +63,15 @@ public abstract class Solver {
     }
 
     protected void search() {
-        if (!csp.allInstantiated())
-            fromNewVariable();
+        Variable next;
+        if ((next = choseNextVar()) != null)
+            next.setDomain(saveDomainAndSearchBranch(next));
         else if (csp.hasSolution())
             saveSolution();
     }
 
     private void saveSolution() {
         result.addSol(csp.solution());
-    }
-
-    /**
-     * Choisit la prochaine variable à instancier puis parcourt son domaine.
-     */
-    private void fromNewVariable() {
-        Variable var = choseNextVar();
-        Domain d = saveDomainAndSearchBranch(var);
-        var.setDomain(d);
     }
 
     /**

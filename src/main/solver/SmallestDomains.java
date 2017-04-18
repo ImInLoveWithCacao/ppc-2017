@@ -12,6 +12,6 @@ public class SmallestDomains extends WithFilter {
 
     @Override
     protected Variable choseNextVar() {
-        return csp.streamUninstantiated().min(comparingInt(Variable::getDomainSize)).get();
+        return csp.streamUninstantiated().min(comparingInt(Variable::getDomainSize)).orElse(null);
     }
 }

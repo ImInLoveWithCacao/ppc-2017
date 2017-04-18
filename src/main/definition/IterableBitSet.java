@@ -50,16 +50,15 @@ public class IterableBitSet implements Iterable<Integer> {
         values.set(v);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return this == o
+            || !(o == null || getClass() != o.getClass())
+            && Objects.equals(values, ((IterableBitSet) o).values);
+    }
 
     @Override
     public int hashCode() {
         return Objects.hash(values);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return this == obj ||
-            !(obj == null || getClass() != obj.getClass())
-                && Objects.equals(this.values, ((IterableBitSet) obj).values);
     }
 }

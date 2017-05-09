@@ -2,20 +2,18 @@ package tools;
 
 import definition.Variable;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Map.Entry;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
 
 public class Solution {
     private Map<String, Integer> solutions;
 
-    public Solution(Variable[] vars) {
-        solutions = new HashMap<>();
-        Arrays.stream(vars).forEach(var -> solutions.put(var.getName(), var.getValue()));
+    public Solution(Stream<Variable> vars) {
+        solutions = vars.collect(toMap(Variable::getName, Variable::getValue));
     }
 
     Integer[] serialize() {
@@ -23,8 +21,9 @@ public class Solution {
     }
 
     public String toString() {
-        Set<String> solutions = this.solutions.entrySet().stream().map(Entry::toString).collect(Collectors.toSet());
-        return "{".concat(String.join("; ", solutions)).concat("}");
+        return this.solutions.entrySet().stream()
+            .map(Entry::toString)
+            .collect(joining("; ", "{", "}"));
     }
 
     @Override

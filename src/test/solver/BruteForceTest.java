@@ -52,9 +52,9 @@ class BruteForceTest {
         Constraint[] cons = new Constraint[]{binaryConstraint(vars[0], INF, vars[1])};
         assertResultsEqual(BRUTEFORCE, new Csp(vars, cons),
             mockSearchResult(6,
-                new Solution(new Variable[]{
+                new Solution(Arrays.stream(new Variable[]{
                     createOneVar(0, 0, 0), createOneVar(1, 1, 1)
-                })
+                }))
             )
         );
     }

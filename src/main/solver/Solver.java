@@ -56,6 +56,7 @@ public abstract class Solver {
      * @return Un object contentant les données relatives à la recherche (temps d'execution, resultats, etc).
      */
     SearchResult solve() {
+        System.out.println("Solving...");
         result.timerStart();
         search();
         result.timerEnd();

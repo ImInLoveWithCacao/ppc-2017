@@ -51,7 +51,7 @@ class BackTrackTest {
     void it_stops_when_necessary() {
         Variable[] vars = createVariables(2, 0, 1);
         Constraint[] cons = new Constraint[]{binaryConstraint(vars[0], INF, vars[1])};
-        assertResultsEqual(vars, cons, mockSearchResult(4, new Solution(successive(2))));
+        assertResultsEqual(vars, cons, mockSearchResult(4, new Solution(Arrays.stream(successive(2)))));
     }
 
     @Test
@@ -59,7 +59,7 @@ class BackTrackTest {
         Variable[] vars = createVariables(3, 0, 2);
         Constraint[] cons = chainInferior(vars);
 
-        assertResultsEqual(vars, cons, mockSearchResult(12, new Solution(successive(3))));
+        assertResultsEqual(vars, cons, mockSearchResult(12, new Solution(Arrays.stream(successive(3)))));
     }
 
     @Test
@@ -70,15 +70,25 @@ class BackTrackTest {
             binaryConstraint(vars[0], INF, vars[2])};
 
         assertResultsEqual(vars, cons,
-            mockSearchResult(18, Arrays.stream(problem1Sols).map(Solution::new).toArray(Solution[]::new)));
+            mockSearchResult(
+                18,
+                Arrays.stream(problem1Sols)
+                    .map(Arrays::stream)
+                    .map(Solution::new).toArray(Solution[]::new)));
     }
 
     @Test
     void problem_2() {
         Variable[] vars = createVariables(2, 0, 1);
         Constraint[] cons = {binaryConstraint(vars[0], DIFF, vars[1])};
-        assertResultsEqual(vars, cons,
-            mockSearchResult(6, Arrays.stream(problem2Sol).map(Solution::new).toArray(Solution[]::new)));
+        assertResultsEqual(
+            vars,
+            cons,
+            mockSearchResult(6, Arrays.stream(problem2Sol)
+                .map(Arrays::stream)
+                .map(Solution::new)
+                .toArray(Solution[]::new))
+        );
     }
 
     private void assertResultsEqual(Variable[] vars, Constraint[] cons, SearchResult searchResult) {

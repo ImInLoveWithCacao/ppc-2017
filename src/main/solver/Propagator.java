@@ -65,7 +65,7 @@ class Propagator {
      * Restore les domaines à leur état d'avant le filtrage.
      */
     void restoreDomains() {
-        changedDomains.forEach(i -> csp.getVars()[i].setDomain(savedDomains[i]));
+        changedDomains.forEach(i -> csp.getVars().get(i).setDomain(savedDomains[i]));
     }
 
     /**

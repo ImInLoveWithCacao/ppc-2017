@@ -2,22 +2,28 @@ package definition;
 
 import tools.Solution;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
+import static definition.factories.VariableFactory.createOneVar;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.IntStream.range;
 
 public class Csp {
-    private Variable[] vars;
-    private Constraint[] cons;
+    private List<Variable> vars;
+    private List<Constraint> cons;
     private Map<Integer, Set<Constraint>> relatedConstraints;
 
+    public Csp() {
+        vars = new LinkedList<>();
+        cons = new LinkedList<>();
+        relatedConstraints = new HashMap<>();
+    }
+
     public Csp(Variable[] vars, Constraint[] cons) {
-        this.vars = vars;
-        this.cons = cons;
+        System.out.println("creating csp");
+        this.vars = Arrays.stream(vars).collect(toList());
+        this.cons = Arrays.stream(cons).collect(toList());
         this.relatedConstraints = streamVars().collect(
             toMap(
                 Variable::getInd,
@@ -30,16 +36,16 @@ public class Csp {
         this(vars, new Constraint[]{});
     }
 
-    public Variable[] getVars() {
+    public List<Variable> getVars() {
         return vars;
     }
 
-    private Constraint[] getConstraints() {
+    private List<Constraint> getConstraints() {
         return this.cons;
     }
 
     public Stream<Variable> streamVars() {
-        return Arrays.stream(getVars());
+        return getVars().stream();
     }
 
     public Stream<Variable> streamUninstantiated() {
@@ -50,8 +56,8 @@ public class Csp {
         return streamVars().map(Variable::cloneDomain).toArray(Domain[]::new);
     }
 
-    private Stream<Constraint> streamConstraints() {
-        return Arrays.stream(getConstraints());
+    Stream<Constraint> streamConstraints() {
+        return getConstraints().stream();
     }
 
     public boolean hasSolution() {
@@ -71,6 +77,16 @@ public class Csp {
     }
 
     public Solution solution() {
-        return new Solution(getVars());
+        return new Solution(streamVars());
+    }
+
+    public void addOneVariable(int minD, int maxD) {
+        Variable var = createOneVar(vars.size(), minD, maxD);
+        vars.add(var);
+        relatedConstraints.put(var.getInd(), new HashSet<>());
+    }
+
+    public void addVariables(int nbVars, int minD, int maxD) {
+        range(0, nbVars).forEach(i -> this.addOneVariable(minD, maxD));
     }
 }

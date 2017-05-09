@@ -1,6 +1,5 @@
 package solver;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static solver.Solver.*;
@@ -42,7 +41,6 @@ class Eval2016 {
         assertQuestion21(1000);
     }
 
-    @Ignore
     @Test
     void question_2_1_n_egal_10000() {
         assertQuestion21(10000);
@@ -56,6 +54,11 @@ class Eval2016 {
     @Test
     void question_2_2_n_egal_10000() {
         assertQuestion22(10000);
+    }
+
+    @Test
+    void question_2_2_n_egal_100000() {
+        assertQuestion22(100000);
     }
 
 }

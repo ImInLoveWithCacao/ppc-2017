@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static java.util.stream.Collectors.joining;
+
 public class SearchResult {
+    private static final String NEW_LINE = "\n";
     private String functionName;
     private long time;
     private int nodes;
@@ -21,9 +24,7 @@ public class SearchResult {
 
 
     public String toString() {
-        StringBuilder res = new StringBuilder(data().concat("\n"));
-        solutions.stream().map(s -> s.toString().concat("\n")).forEach(res::append);
-        return res.toString();
+        return data().concat(solutions.stream().map(Solution::toString).collect(joining("\n")));
     }
 
     public void timerStart() {
@@ -63,15 +64,13 @@ public class SearchResult {
     }
 
     public Integer[][] serializedSolutions() {
-        return solutions.stream()
-            .map(Solution::serialize)
-            .toArray(Integer[][]::new);
+        return solutions.stream().map(Solution::serialize).toArray(Integer[][]::new);
     }
 
     public String data() {
-        return "Function name : ".concat(functionName).concat("\n")
-            .concat("Elapsed time : ").concat(Tools.convertFromNano(time)).concat("\n")
-            .concat("Explored nodes : ").concat("" + nodes).concat("\n")
-            .concat("Number of solutions : ").concat("" + nbSols);
+        return "Function name : ".concat(functionName).concat(NEW_LINE)
+            .concat("Elapsed time : ").concat(Tools.convertFromNano(time)).concat(NEW_LINE)
+            .concat("Explored nodes : ").concat(nodes + NEW_LINE)
+            .concat("Number of solutions : ").concat(nbSols + NEW_LINE);
     }
 }

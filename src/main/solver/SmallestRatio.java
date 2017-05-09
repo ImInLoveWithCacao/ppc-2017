@@ -16,6 +16,6 @@ public class SmallestRatio extends WithFilter {
     }
 
     private double ratio(Variable var) {
-        return var.getDomainSize() / ((double) csp.relatedConstraints(var).count());
+        return var.getDomainSize() / ((double) csp.getRelatedConstraints(var).count());
     }
 }

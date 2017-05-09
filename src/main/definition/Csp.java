@@ -3,28 +3,40 @@ package definition;
 import tools.Solution;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 public class Csp {
     private Variable[] vars;
     private Constraint[] cons;
+    private Map<Integer, Set<Constraint>> relatedConstraints;
 
-	public Csp(Variable[] vars, Constraint[] cons) {
-		this.vars = vars;
-		this.cons = cons;
-	}
+    public Csp(Variable[] vars, Constraint[] cons) {
+        this.vars = vars;
+        this.cons = cons;
+        this.relatedConstraints = streamVars().collect(
+            toMap(
+                Variable::getInd,
+                var -> streamConstraints().filter(c -> c.affects(var)).collect(toSet())
+            )
+        );
+    }
 
     public Csp(Variable[] vars) {
         this(vars, new Constraint[]{});
     }
 
-	public Variable[] getVars() {
-		return vars;
-	}
+    public Variable[] getVars() {
+        return vars;
+    }
 
     private Constraint[] getConstraints() {
         return this.cons;
-	}
+    }
 
     public Stream<Variable> streamVars() {
         return Arrays.stream(getVars());
@@ -38,16 +50,16 @@ public class Csp {
         return streamVars().map(Variable::cloneDomain).toArray(Domain[]::new);
     }
 
-	public boolean hasSolution() {
+    private Stream<Constraint> streamConstraints() {
+        return Arrays.stream(getConstraints());
+    }
+
+    public boolean hasSolution() {
         return streamConstraints().allMatch(Constraint::isSatisfied);
     }
 
-    public Stream<Constraint> relatedConstraints(Variable var) {
-        return streamConstraints().filter(c -> c.affects(var));
-    }
-
-    private Stream<Constraint> streamConstraints() {
-        return Arrays.stream(getConstraints());
+    public Stream<Constraint> getRelatedConstraints(Variable var) {
+        return relatedConstraints.get(var.getInd()).stream();
     }
 
     public String toString() {
@@ -58,7 +70,7 @@ public class Csp {
         return s.toString();
     }
 
-	public Solution solution() {
+    public Solution solution() {
         return new Solution(getVars());
     }
 }

@@ -2,6 +2,8 @@ package definition;
 
 import java.util.Objects;
 
+import static java.lang.String.join;
+
 public class Variable {
     private int idx;
     private String name;
@@ -83,6 +85,6 @@ public class Variable {
     }
 
     public String toString() {
-        return this.name.concat(" := ").concat(this.dom.toString());
+        return join(" := ", this.name, this.dom.toString());
     }
 }

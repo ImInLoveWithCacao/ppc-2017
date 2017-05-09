@@ -4,8 +4,7 @@ import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static solver.Solver.*;
-import static solver.TestUtils.assertQuestion21;
-import static solver.TestUtils.assertQueston1;
+import static solver.TestUtils.*;
 
 
 class Eval2016 {
@@ -23,30 +22,40 @@ class Eval2016 {
 
     @Test
     void question1_n_egal_7() {
-        assertQueston1(7, 11024, SMALLESTRATIO);
+        assertQueston1(7, 11024, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
     }
 
     //------------------QUESTION 2---------------------------------------
 
     @Test
     void question_2_1_n_egal_10() {
-        assertQuestion21(10, WITHFILTER);
+        assertQuestion21(10);
     }
 
     @Test
     void question_2_1_n_egal_100() {
-        assertQuestion21(100, WITHFILTER);
+        assertQuestion21(100);
     }
 
     @Test
     void question_2_1_n_egal_1000() {
-        assertQuestion21(1000, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
+        assertQuestion21(1000);
     }
 
     @Ignore
     @Test
     void question_2_1_n_egal_10000() {
-        assertQuestion21(10000, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
+        assertQuestion21(10000);
+    }
+
+    @Test
+    void question_2_2_n_egal_1000() {
+        assertQuestion22(1000);
+    }
+
+    @Test
+    void question_2_2_n_egal_10000() {
+        assertQuestion22(10000);
     }
 
 }

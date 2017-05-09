@@ -4,7 +4,8 @@ import definition.*;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.stream.IntStream;
+
+import static java.util.stream.IntStream.range;
 
 class Propagator {
     private Csp csp;
@@ -74,20 +75,16 @@ class Propagator {
      * S'arrête si un filtrage vide un domaine.
      */
     void propagate() {
-        csp.relatedConstraints(currentNode).forEach(activeConstraints::add);
+        csp.getRelatedConstraints(currentNode).forEach(activeConstraints::add);
 
-        while (canStillPropagate())
-            if (propagationBreaksConsistency()) break;
-    }
-
-    private boolean propagationBreaksConsistency() {
-        try {
-            trigger();
-        } catch (ConsistencyException e) {
-            arcsAreConsistent = false;
-            return true;
+        while (canStillPropagate()) {
+            try {
+                trigger();
+            } catch (ConsistencyException e) {
+                arcsAreConsistent = false;
+                break;
+            }
         }
-        return false;
     }
 
     private void trigger() throws ConsistencyException {
@@ -99,7 +96,7 @@ class Propagator {
     }
 
     private void addNewConstraintsToQueue() {
-        IntStream.range(0, currentFilter.length)
+        range(1, currentFilter.length)
             .filter(i -> currentFilter[i])
             .mapToObj(this::getAssociatedVariable)
             .forEach(this::addToPropagationQueue);
@@ -115,7 +112,7 @@ class Propagator {
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
-        csp.relatedConstraints(modifiedVariable)
+        csp.getRelatedConstraints(modifiedVariable)
             .filter(this::isNotActiveYet)
             .forEach(activeConstraints::add);
     }

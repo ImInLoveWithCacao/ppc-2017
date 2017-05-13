@@ -45,7 +45,7 @@ class ConstraintDiffTest {
     @Test
     void filter() {
         Variable[] variables = createVariables(2, 0, 1);
-        Variable filtering = createOneVar(2, 0, 0);
+        Variable filtering = oneVariable(2, 0, 0);
         binaryConstraint(filtering, DIFF, variables[0]).filter();
         binaryConstraint(filtering, DIFF, variables[1]).filter();
         assertEquals("{1}{1}{0}", domainsToString(variables, new Variable[]{filtering}));

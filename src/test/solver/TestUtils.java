@@ -83,17 +83,17 @@ public class TestUtils {
     }
 
     static void assertQuestion21(int nbVariables) {
-        assertQuestion2(nbVariables, 1, 120);
+        assertQuestion2(nbVariables, 1, 120, "1");
     }
 
     static void assertQuestion22(int nbVariables) {
-        assertQuestion2(nbVariables, 2, 0);
+        assertQuestion2(nbVariables, 2, 0, "2");
     }
 
-    private static void assertQuestion2(int nbVariables, int subIndex, int expected) {
+    private static void assertQuestion2(int nbVariables, int subIndex, int expected, String subQuestion) {
         SearchResult res = createSolver(
             WITHFILTER,
-            "question 2.1 - #variables (n) = " + nbVariables,
+            "question 2.".concat(subQuestion).concat("#variables (n) = " + nbVariables),
             generateQ2(nbVariables, subIndex)
         ).solve();
         System.out.println(res.data());

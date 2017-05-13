@@ -29,8 +29,8 @@ class ConstraintInfEgTest {
                 createVariables(2, 0, 0),
                 decreasingDomains(2, 1),
                 new Variable[]{
-                    createOneVar(0, 1, 1),
-                    createOneVar(1, 0, 0)
+                    oneVariable(0, 1, 1),
+                    oneVariable(1, 0, 0)
                 }
             })
         );
@@ -48,8 +48,8 @@ class ConstraintInfEgTest {
                 createVariables(2, 0, 0),
                 decreasingDomains(2, 1),
                 new Variable[]{
-                    createOneVar(0, 1, 1),
-                    createOneVar(1, 0, 0)
+                    oneVariable(0, 1, 1),
+                    oneVariable(1, 0, 0)
                 }
             })
         );
@@ -64,12 +64,12 @@ class ConstraintInfEgTest {
         Variable[][] variables = {
             successive(2),
             new Variable[]{
-                createOneVar(0, 0, 1),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 0, 1),
+                oneVariable(1, 0, 1)
             },
             new Variable[]{
-                createOneVar(0, 0, 1),
-                createOneVar(1, 1, 2)
+                oneVariable(0, 0, 1),
+                oneVariable(1, 1, 2)
             }
         };
         assertDomainsAfterFilterEqual(domainsToString(variables), variables);
@@ -79,16 +79,16 @@ class ConstraintInfEgTest {
     void filter() {
         assertDomainsAfterFilterEqual("{1}{1}{1}{1}{}{}",
             new Variable[]{
-                createOneVar(0, 1, 1),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 1, 1),
+                oneVariable(1, 0, 1)
             },
             new Variable[]{
-                createOneVar(0, 1, 2),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 1, 2),
+                oneVariable(1, 0, 1)
             },
             new Variable[]{
-                createOneVar(0, 1, 2),
-                createOneVar(1, 0, 0)
+                oneVariable(0, 1, 2),
+                oneVariable(1, 0, 0)
             }
         );
     }

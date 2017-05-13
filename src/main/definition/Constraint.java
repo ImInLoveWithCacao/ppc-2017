@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public abstract class Constraint {
-    private Variable[] variables = new Variable[2];
+    protected Variable[] variables = new Variable[2];
 
     public Constraint(Variable[] vars) {
         variables = vars;
@@ -59,17 +59,4 @@ public abstract class Constraint {
     }
 
     public abstract String toString();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Constraint that = (Constraint) o;
-        return Arrays.equals(variables, that.variables);
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(variables);
-    }
 }

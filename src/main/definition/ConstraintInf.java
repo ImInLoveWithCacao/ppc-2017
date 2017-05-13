@@ -1,11 +1,11 @@
 package definition;
 
-import static java.util.stream.Collectors.joining;
+import static definition.factories.ConstraintFactory.INF;
 
-public class ConstraintInf extends Constraint {
+public class ConstraintInf extends BinaryConstraint {
 
     public ConstraintInf(Variable v1, Variable v2) {
-        super(new Variable[]{v1, v2});
+        super(new Variable[]{v1, v2}, INF);
     }
 
     @Override
@@ -16,10 +16,6 @@ public class ConstraintInf extends Constraint {
     @Override
     public boolean isNecessary() {
         return (getVars()[1].getSup() > getVars()[0].getInf());
-    }
-
-    public String toString() {
-        return streamVars().map(Variable::toString).collect(joining(" < "));
     }
 
     @Override

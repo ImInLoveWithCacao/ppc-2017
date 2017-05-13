@@ -33,13 +33,13 @@ class ConstraintInfTest {
         assertGivesResults(Constraint::isNecessary, new Boolean[]{true, true, true, false}, Arrays.stream(new Variable[][]{
             successive(2),
             new Variable[]{
-                createOneVar(0, 0, 0),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 0, 0),
+                oneVariable(1, 0, 1)
             },
             createVariables(2, 0, 1),
             new Variable[]{
-                createOneVar(0, 1, 1),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 1, 1),
+                oneVariable(1, 0, 1)
             }
         }));
     }
@@ -53,12 +53,12 @@ class ConstraintInfTest {
         Variable[][] variables = {
             successive(2),
             new Variable[]{
-                createOneVar(0, 0, 1),
-                createOneVar(1, 1, 2)
+                oneVariable(0, 0, 1),
+                oneVariable(1, 1, 2)
             },
             new Variable[]{
-                createOneVar(0, 0, 1),
-                createOneVar(1, 2, 3)
+                oneVariable(0, 0, 1),
+                oneVariable(1, 2, 3)
             }
         };
         assertDomainsAfterFilterEqual(INF, domainsToString(variables), variables);
@@ -69,13 +69,13 @@ class ConstraintInfTest {
         assertDomainsAfterFilterEqual(
             INF, "{0}{1}{0}{1}{0}{}",
             new Variable[]{
-                createOneVar(0, 0, 0),
-                createOneVar(1, 0, 1)
+                oneVariable(0, 0, 0),
+                oneVariable(1, 0, 1)
             },
             createVariables(2, 0, 1),
             new Variable[]{
-                createOneVar(0, 0, 0),
-                createOneVar(1, 0, 0)
+                oneVariable(0, 0, 0),
+                oneVariable(1, 0, 0)
             }
         );
     }

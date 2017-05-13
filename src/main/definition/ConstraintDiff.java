@@ -1,11 +1,11 @@
 package definition;
 
-import static java.util.stream.Collectors.joining;
+import static definition.factories.ConstraintFactory.DIFF;
 
-public class ConstraintDiff extends Constraint {
+public class ConstraintDiff extends BinaryConstraint {
 
     public ConstraintDiff(Variable v1, Variable v2) {
-        super(new Variable[]{v1, v2});
+        super(new Variable[]{v1, v2}, DIFF);
     }
 
     @Override
@@ -16,10 +16,6 @@ public class ConstraintDiff extends Constraint {
     @Override
     public boolean isNecessary() {
         return isSatisfied();
-    }
-
-    public String toString() {
-        return streamVars().map(Variable::toString).collect(joining(" != "));
     }
 
     @Override

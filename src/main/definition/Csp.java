@@ -7,7 +7,7 @@ import java.util.regex.PatternSyntaxException;
 import java.util.stream.Stream;
 
 import static definition.factories.ConstraintFactory.binaryConstraint;
-import static definition.factories.VariableFactory.createOneVar;
+import static definition.factories.VariableFactory.oneVariable;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.IntStream.range;
@@ -30,8 +30,8 @@ public class Csp {
         this.relatedConstraints = streamVars()
             .collect(toMap(
                 identity(),
-                var -> streamConstraints().filter(c -> c.affects(var)).collect(toSet()))
-            );
+                var -> streamConstraints().filter(c -> c.affects(var)).collect(toSet())
+            ));
     }
 
     public Csp(Variable[] vars) {
@@ -46,7 +46,7 @@ public class Csp {
         return this.cons;
     }
 
-    public Stream<Variable> streamVars() {
+    Stream<Variable> streamVars() {
         return getVars().stream();
     }
 
@@ -83,7 +83,7 @@ public class Csp {
     }
 
     public void addOneVariable(int minD, int maxD) {
-        Variable var = createOneVar(vars.size(), minD, maxD);
+        Variable var = oneVariable(vars.size(), minD, maxD);
         vars.add(var);
         relatedConstraints.put(var, new HashSet<>());
     }
@@ -99,8 +99,8 @@ public class Csp {
             Variable v2 = vars.get(split[2].charAt(1) - 48);
             Constraint constraint = binaryConstraint(v1, split[1], v2);
             cons.add(constraint);
-            relatedConstraints.get(v1.getInd()).add(constraint);
-            relatedConstraints.get(v2.getInd()).add(constraint);
+            relatedConstraints.get(v1).add(constraint);
+            relatedConstraints.get(v2).add(constraint);
         } catch (PatternSyntaxException e) {
             throw new IllegalArgumentException("Binary constrant definition should match x[0-9]+ ?(<|>|!)?=? ?x[0-9]+");
         }

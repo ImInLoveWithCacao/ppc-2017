@@ -1,11 +1,11 @@
 package definition;
 
-import static java.util.stream.Collectors.joining;
+import static definition.factories.ConstraintFactory.INF_EQ;
 
-public class ConstraintInfEg extends Constraint {
+public class ConstraintInfEg extends BinaryConstraint {
 
     public ConstraintInfEg(Variable v1, Variable v2) {
-        super(new Variable[]{v1, v2});
+        super(new Variable[]{v1, v2}, INF_EQ);
     }
 
     @Override
@@ -16,10 +16,6 @@ public class ConstraintInfEg extends Constraint {
     @Override
     public boolean isNecessary() {
         return (getVars()[1].getSup() >= getVars()[0].getInf());
-    }
-
-    public String toString() {
-        return streamVars().map(Variable::toString).collect(joining(" <= "));
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static definition.factories.ConstraintFactory.INF;
 import static definition.factories.ConstraintFactory.binaryConstraint;
-import static definition.factories.VariableFactory.createOneVar;
+import static definition.factories.VariableFactory.oneVariable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PropagatorTest {
@@ -16,9 +16,9 @@ class PropagatorTest {
 
     @Test
     void it_propagates_correctly() {
-        Variable x0 = createOneVar(0, 0, 2);
-        Variable x1 = createOneVar(1, 0, 2);
-        Variable x2 = createOneVar(2, 2, 2);
+        Variable x0 = oneVariable(0, 0, 2);
+        Variable x1 = oneVariable(1, 0, 2);
+        Variable x2 = oneVariable(2, 2, 2);
         Constraint c1 = binaryConstraint(x0, INF, x1);
         Constraint c2 = binaryConstraint(x1, INF, x2);
 

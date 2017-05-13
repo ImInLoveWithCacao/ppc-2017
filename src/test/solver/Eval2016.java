@@ -2,7 +2,8 @@ package solver;
 
 import org.junit.jupiter.api.Test;
 
-import static solver.Solver.*;
+import static solver.Solver.BACKTRACK;
+import static solver.Solver.WITHFILTER;
 import static solver.TestUtils.*;
 
 
@@ -21,7 +22,7 @@ class Eval2016 {
 
     @Test
     void question1_n_egal_7() {
-        assertQueston1(7, 11024, WITHFILTER, SMALLESTDOMAINS, SMALLESTRATIO);
+        assertQueston1(7, 11024, WITHFILTER);
     }
 
     //------------------QUESTION 2---------------------------------------
@@ -56,7 +57,6 @@ class Eval2016 {
         assertQuestion22(10000);
     }
 
-    @Test
     void question_2_2_n_egal_100000() {
         assertQuestion22(100000);
     }

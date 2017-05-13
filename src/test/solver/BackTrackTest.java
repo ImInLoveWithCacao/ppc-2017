@@ -17,33 +17,33 @@ import static solver.TestUtils.mockSearchResult;
 class BackTrackTest {
     private static final Variable[][] problem1Sols = {
         new Variable[]{
-            createOneVar(0, 0, 0),
-            createOneVar(1, 1, 1),
-            createOneVar(2, 1, 1)
+            oneVariable(0, 0, 0),
+            oneVariable(1, 1, 1),
+            oneVariable(2, 1, 1)
         },
         successive(3),
         new Variable[]{
-            createOneVar(0, 0, 0),
-            createOneVar(1, 2, 2),
-            createOneVar(2, 1, 1),
+            oneVariable(0, 0, 0),
+            oneVariable(1, 2, 2),
+            oneVariable(2, 1, 1),
         },
         new Variable[]{
-            createOneVar(0, 0, 0),
-            createOneVar(1, 2, 2),
-            createOneVar(2, 2, 2)
+            oneVariable(0, 0, 0),
+            oneVariable(1, 2, 2),
+            oneVariable(2, 2, 2)
         },
         new Variable[]{
-            createOneVar(0, 1, 1),
-            createOneVar(1, 2, 2),
-            createOneVar(2, 2, 2)
+            oneVariable(0, 1, 1),
+            oneVariable(1, 2, 2),
+            oneVariable(2, 2, 2)
         }
     };
 
     private static final Variable[][] problem2Sol = {
         successive(2),
         new Variable[]{
-            createOneVar(0, 1, 1),
-            createOneVar(1, 0, 0)
+            oneVariable(0, 1, 1),
+            oneVariable(1, 0, 0)
         }
     };
 

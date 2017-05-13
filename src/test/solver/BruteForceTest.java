@@ -10,8 +10,8 @@ import java.util.Arrays;
 
 import static definition.factories.ConstraintFactory.INF;
 import static definition.factories.ConstraintFactory.binaryConstraint;
-import static definition.factories.VariableFactory.createOneVar;
 import static definition.factories.VariableFactory.createVariables;
+import static definition.factories.VariableFactory.oneVariable;
 import static java.util.stream.IntStream.range;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,7 +33,7 @@ class BruteForceTest {
     @Test
     void it_selects_first_uninstantiated_variable() {
         assertAllPickFirst(
-            new Variable[]{createOneVar(0, 0, 0), createOneVar(1, 0, 1)},
+            new Variable[]{oneVariable(0, 0, 0), oneVariable(1, 0, 1)},
             1, BRUTEFORCE, BACKTRACK, WITHFILTER);
     }
 
@@ -53,7 +53,7 @@ class BruteForceTest {
         assertResultsEqual(BRUTEFORCE, new Csp(vars, cons),
             mockSearchResult(6,
                 new Solution(Arrays.stream(new Variable[]{
-                    createOneVar(0, 0, 0), createOneVar(1, 1, 1)
+                    oneVariable(0, 0, 0), oneVariable(1, 1, 1)
                 }))
             )
         );

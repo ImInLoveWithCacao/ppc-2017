@@ -52,13 +52,13 @@ class CspTest {
         csp.addVariables(3, 0, 2);
         assertEquals(3, csp.getVars().get(3).getInd());
     }
-//
-//    @Test
-//    void addConstraint() {
-//        Csp csp = new Csp();
-//        csp.addVariables(2, 0, 2);
-//        csp.addConstraint(0, "<", 1);
-//        assertEquals(csp.getRelatedConstraints(new Variable(0, 0, 0)).count(), 1);
-//        assertEquals(csp.getRelatedConstraints(new Variable(1, 0, 0)).count(), 1);
-//    }
+
+    @Test
+    void addConstraint() {
+        Csp csp = new Csp();
+        csp.addVariables(2, 0, 2);
+        csp.addBinaryConstraint("x0 < x1");
+        assertEquals(csp.getRelatedConstraints(new Variable(0, 0, 0)).count(), 1);
+        assertEquals(csp.getRelatedConstraints(new Variable(1, 0, 0)).count(), 1);
+    }
 }

@@ -81,7 +81,7 @@ public class Variable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idx, getName(), dom);
+        return idx;
     }
 
     public String toString() {

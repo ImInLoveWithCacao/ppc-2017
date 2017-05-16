@@ -21,10 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static solver.Solver.WITHFILTER;
 import static solver.Solver.createSolver;
 
-interface ConstraintFeeder {
-    Constraint apply(int nb, Variable[] vars, int i);
-}
-
 public class TestUtils {
     static void assertQueston1(int maxDomainSize, int expectedNbSols, int... options) {
         assertForGivenOptions(maxDomainSize, expectedNbSols, res -> System.out.println(res.data()), options);
@@ -93,7 +89,7 @@ public class TestUtils {
     private static void assertQuestion2(int nbVariables, int subIndex, int expected, String subQuestion) {
         SearchResult res = createSolver(
             WITHFILTER,
-            "question 2.".concat(subQuestion).concat("#variables (n) = " + nbVariables),
+            "Question 2.".concat(subQuestion).concat(" - #variables (n) = " + nbVariables),
             generateQ2(nbVariables, subIndex)
         ).solve();
         System.out.println(res.data());

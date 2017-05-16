@@ -15,11 +15,6 @@ class Propagator {
     private boolean[] currentFilter;
 
     /**
-     * Vaut false si l'un des domaines a été vidé.
-     */
-    private boolean arcsAreConsistent;
-
-    /**
      * Un tableau de nbVariables boolean. L'élément i vaut true ssi son domaine a
      * changé lors de la propagation.
      */
@@ -37,16 +32,11 @@ class Propagator {
         this.currentNode = currentNode;
         savedDomains = csp.cloneDomains();
         activeConstraints = new LinkedList<>();
-        arcsAreConsistent = true;
         changedDomains = new IterableBitSet();
     }
 
     IterableBitSet changedDomains() {
         return changedDomains;
-    }
-
-    boolean areArcsConsistent() {
-        return arcsAreConsistent;
     }
 
     private boolean canStillPropagate() {
@@ -74,25 +64,16 @@ class Propagator {
      * a été réduit par un filtrage.
      * S'arrête si un filtrage vide un domaine.
      */
-    void propagate() {
+    void propagate() throws EmptyVariableException {
         csp.streamRelatedConstraints(currentNode).forEach(activeConstraints::add);
 
         while (canStillPropagate()) {
-            try {
-                trigger();
-            } catch (ConsistencyException e) {
-                arcsAreConsistent = false;
-                break;
-            }
+            setCurrentConstraint(activeConstraints.poll());
+            setCurrentFilter(currentConstraint.filter());
+
+            if (currentFilter[0]) throw new EmptyVariableException();
+            else addNewConstraintsToQueue();
         }
-    }
-
-    private void trigger() throws ConsistencyException {
-        setCurrentConstraint(activeConstraints.poll());
-        setCurrentFilter(currentConstraint.filter());
-
-        if (currentFilter[0]) throw new ConsistencyException();
-        else addNewConstraintsToQueue();
     }
 
     private void addNewConstraintsToQueue() {
@@ -122,5 +103,5 @@ class Propagator {
     }
 }
 
-class ConsistencyException extends Exception {
+class EmptyVariableException extends Exception {
 }

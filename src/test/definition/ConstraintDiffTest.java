@@ -54,7 +54,7 @@ class ConstraintDiffTest {
     @Test
     void toString_test() {
         Variable[] vars = successive(2);
-        assertEquals("x0!=x1", binaryConstraint(vars[0], DIFF, vars[1]).toString());
+        assertEquals("(x0 != x1)", binaryConstraint(vars[0], DIFF, vars[1]).toString());
     }
 
 }

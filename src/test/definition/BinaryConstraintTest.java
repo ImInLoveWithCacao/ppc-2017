@@ -24,7 +24,6 @@ class BinaryConstraintTest {
         Variable v1 = oneVariable(0, 0, 2);
         Variable v2 = oneVariable(1, 1, 3);
         int h1 = binaryConstraint(v1, DIFF, v2).hashCode();
-        System.out.println(DIFF.hashCode() + " " + DIFF.hashCode());
         assertEquals(h1, binaryConstraint(v1, DIFF, v2).hashCode());
 
     }

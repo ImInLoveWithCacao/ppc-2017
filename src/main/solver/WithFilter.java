@@ -12,9 +12,13 @@ public class WithFilter extends BackTrack {
      */
     protected void coreSearch() {
         Propagator p = new Propagator(csp, currentNode);
-        p.propagate();
 
-        if (p.areArcsConsistent()) super.coreSearch();
-        p.restoreDomains();
+        try {
+            p.propagate();
+            super.coreSearch();
+        } catch (EmptyVariableException ignored) {
+        } finally {
+            p.restoreDomains();
+        }
     }
 }

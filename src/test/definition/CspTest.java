@@ -151,7 +151,7 @@ class CspTest {
         csp.addBinaryConstraints(
             "x0 < x1",
             "x1!=x2",
-            "x2 <=x0"
+            "x2   <=x0"
         );
         range(0, 2).forEach(i -> assertEquals(2, csp.getRelatedConstraints(variables[i]).size()));
     }

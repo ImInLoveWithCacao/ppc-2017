@@ -3,7 +3,7 @@ package definition.factories;
 
 import definition.*;
 
-import java.util.stream.IntStream;
+import static java.util.stream.IntStream.range;
 
 public class ConstraintFactory {
     public static final String INF = "<";
@@ -15,7 +15,7 @@ public class ConstraintFactory {
     }
 
     public static Constraint[] chainInferior(Variable[] vars, boolean strict) {
-        return IntStream.range(0, vars.length - 1)
+        return range(0, vars.length - 1)
                        .mapToObj(i -> binaryConstraint(vars[i], strict ? INF : INF_EQ, vars[i + 1]))
                        .toArray(Constraint[]::new);
     }

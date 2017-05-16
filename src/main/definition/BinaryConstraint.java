@@ -8,13 +8,13 @@ import static java.util.stream.Collectors.joining;
 abstract class BinaryConstraint extends Constraint {
     private String operator;
 
-    public BinaryConstraint(Variable[] vars, String operator) {
+    BinaryConstraint(Variable[] vars, String operator) {
         super(vars);
         this.operator = operator;
     }
 
     public String toString() {
-        return streamVars().map(Variable::getName).collect(joining(operator));
+        return streamVars().map(Variable::getName).collect(joining(" ".concat(operator).concat(" "), "(", ")"));
     }
 
     @Override
@@ -31,8 +31,6 @@ abstract class BinaryConstraint extends Constraint {
     }
 
     @Override
-    public boolean isSatisfied() {
-        return false;
-    }
+    public abstract boolean isSatisfied();
 
 }

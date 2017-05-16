@@ -15,7 +15,7 @@ class PropagatorTest {
     private final IterableBitSet propTest = new IterableBitSet(0, 1);
 
     @Test
-    void it_propagates_correctly() {
+    void it_propagates_correctly() throws EmptyVariableException {
         Variable x0 = oneVariable(0, 0, 2);
         Variable x1 = oneVariable(1, 0, 2);
         Variable x2 = oneVariable(2, 2, 2);

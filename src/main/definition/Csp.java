@@ -20,36 +20,39 @@ public class Csp {
     }
 
     public Csp(Variable[] vars, Constraint[] cons) {
-        this();
+        this(vars.length, cons.length);
         addVariables(vars);
         addConstraints(cons);
     }
 
     public Csp() {
-        vars = new ArrayList<>();
-        cons = new ArrayList<>();
+        this(10, 10);
+    }
+
+    public Csp(int nbVars, int nbCons) {
+        vars = new ArrayList<>(nbVars);
+        cons = new ArrayList<>(nbCons);
         relatedConstraints = new HashMap<>();
     }
 
     public void addVariables(Variable... newVars) throws IllegalArgumentException {
-        Arrays.stream(newVars).forEach(newVar -> {
-            try {
-                relatedConstraints.get(newVar).size();
+        for (Variable newVar : newVars) {
+            if (relatedConstraints.containsKey(newVar)) {
                 throw new IllegalArgumentException(
                     "Variable of index"
                         .concat(" " + newVar.getInd())
                         .concat(" already exists in csp")
                 );
-            } catch (NullPointerException e) {
+            } else {
                 vars.add(newVar);
                 relatedConstraints.put(newVar, new HashSet<>());
             }
-        });
+        }
     }
 
     public void addBinaryConstraints(String... constraints) {
-        Arrays.stream(constraints).forEach(s -> {
-            Pattern pattern = Pattern.compile("^x([0-9]+) ?([<>!]?=?) ?x([0-9]+)$");
+        for (String s : constraints) {
+            Pattern pattern = Pattern.compile("^x([0-9]+) *([<!]?=?) *x([0-9]+)$");
             Matcher matcher = pattern.matcher(s);
             if (matcher.matches()) {
                 try {
@@ -64,19 +67,20 @@ public class Csp {
                         .concat(" currently does not exist in csp"));
                 }
             } else {
-                throw new IllegalArgumentException("Binary constraint definition should match "
-                    .concat(pattern.toString()));
+                throw new IllegalArgumentException("Binary constraint definition should match pattern : "
+                    .concat(pattern.toString())
+                    .concat(" (e.g. : x0 < x1)"));
             }
-        });
+        }
     }
 
     void addConstraints(Constraint... constraints) {
-        Arrays.stream(constraints).forEach(constraint -> {
+        for (Constraint constraint : constraints) {
             cons.add(constraint);
             constraint.streamVars()
                 .map(this::getRelatedConstraints)
                 .forEach(set -> set.add(constraint));
-        });
+        }
     }
 
     public List<Variable> getVars() {

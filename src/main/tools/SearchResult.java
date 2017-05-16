@@ -1,8 +1,8 @@
 package tools;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
 import static java.util.stream.Collectors.joining;
 
@@ -12,14 +12,14 @@ public class SearchResult {
     private long time;
     private int nodes;
     private int nbSols;
-    private List<Solution> solutions;
+    private Queue<Solution> solutions;
 
     public SearchResult(String name) {
         functionName = name;
         time = 0;
         nodes = 0;
         nbSols = 0;
-        solutions = new ArrayList<>();
+        solutions = new LinkedList<>();
     }
 
 

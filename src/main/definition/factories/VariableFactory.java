@@ -24,10 +24,13 @@ public class VariableFactory {
             }).toArray(Variable[]::new);
     }
 
-
     public static Variable[] createVariables(int nbVars, int minD, int maxD) {
+        return createVariables(0, nbVars, minD, maxD);
+    }
+
+    public static Variable[] createVariables(int startIndex, int nbVars, int minD, int maxD) {
         return range(0, nbVars)
-            .mapToObj(i -> oneVariable(i, minD, maxD))
+            .mapToObj(i -> oneVariable(startIndex + i, minD, maxD))
             .toArray(Variable[]::new);
     }
 

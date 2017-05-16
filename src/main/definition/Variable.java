@@ -1,7 +1,5 @@
 package definition;
 
-import java.util.Objects;
-
 import static java.lang.String.join;
 
 public class Variable {
@@ -74,9 +72,7 @@ public class Variable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Variable variable = (Variable) o;
-        return idx == variable.idx &&
-            Objects.equals(getName(), variable.getName()) &&
-            Objects.equals(dom, variable.dom);
+        return idx == variable.idx;
     }
 
     @Override

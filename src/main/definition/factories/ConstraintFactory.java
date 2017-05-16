@@ -25,7 +25,7 @@ public class ConstraintFactory {
             case INF:
                 return new ConstraintInf(v1, v2);
             case INF_EQ:
-                return new ConstraintInfEg(v1, v2);
+                return new ConstraintInfEq(v1, v2);
             case DIFF:
                 return new ConstraintDiff(v1, v2);
             default:

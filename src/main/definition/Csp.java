@@ -3,50 +3,91 @@ package definition;
 import tools.Solution;
 
 import java.util.*;
-import java.util.regex.PatternSyntaxException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static definition.factories.ConstraintFactory.binaryConstraint;
-import static definition.factories.VariableFactory.oneVariable;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.IntStream.range;
+import static java.lang.Integer.parseInt;
 
 public class Csp {
     private List<Variable> vars;
     private List<Constraint> cons;
     private Map<Variable, Set<Constraint>> relatedConstraints;
 
-    public Csp() {
-        vars = new LinkedList<>();
-        cons = new LinkedList<>();
-        relatedConstraints = new HashMap<>();
+    public Csp(Variable[] vars) {
+        this(vars, new Constraint[]{});
     }
 
     public Csp(Variable[] vars, Constraint[] cons) {
-        System.out.println("creating csp");
-        this.vars = Arrays.stream(vars).collect(toList());
-        this.cons = Arrays.stream(cons).collect(toList());
-        this.relatedConstraints = streamVars()
-            .collect(toMap(
-                identity(),
-                var -> streamConstraints().filter(c -> c.affects(var)).collect(toSet())
-            ));
+        this();
+        addVariables(vars);
+        addConstraints(cons);
     }
 
-    public Csp(Variable[] vars) {
-        this(vars, new Constraint[]{});
+    public Csp() {
+        vars = new ArrayList<>();
+        cons = new ArrayList<>();
+        relatedConstraints = new HashMap<>();
+    }
+
+    public void addVariables(Variable... newVars) throws IllegalArgumentException {
+        Arrays.stream(newVars).forEach(newVar -> {
+            try {
+                relatedConstraints.get(newVar).size();
+                throw new IllegalArgumentException(
+                    "Variable of index"
+                        .concat(" " + newVar.getInd())
+                        .concat(" already exists in csp")
+                );
+            } catch (NullPointerException e) {
+                vars.add(newVar);
+                relatedConstraints.put(newVar, new HashSet<>());
+            }
+        });
+    }
+
+    public void addBinaryConstraints(String... constraints) {
+        Arrays.stream(constraints).forEach(s -> {
+            Pattern pattern = Pattern.compile("^x([0-9]+) ?([<>!]?=?) ?x([0-9]+)$");
+            Matcher matcher = pattern.matcher(s);
+            if (matcher.matches()) {
+                try {
+                    addConstraints(binaryConstraint(
+                        vars.get(parseInt(matcher.group(1))),
+                        matcher.group(2),
+                        vars.get(parseInt(matcher.group(3)))
+                    ));
+                } catch (IndexOutOfBoundsException e) {
+                    throw new IllegalArgumentException("Variable of index "
+                        .concat(e.getLocalizedMessage())
+                        .concat(" currently does not exist in csp"));
+                }
+            } else {
+                throw new IllegalArgumentException("Binary constraint definition should match "
+                    .concat(pattern.toString()));
+            }
+        });
+    }
+
+    void addConstraints(Constraint... constraints) {
+        Arrays.stream(constraints).forEach(constraint -> {
+            cons.add(constraint);
+            constraint.streamVars()
+                .map(this::getRelatedConstraints)
+                .forEach(set -> set.add(constraint));
+        });
     }
 
     public List<Variable> getVars() {
         return vars;
     }
 
-    private List<Constraint> getConstraints() {
+    List<Constraint> getConstraints() {
         return this.cons;
     }
 
-    Stream<Variable> streamVars() {
+    private Stream<Variable> streamVars() {
         return getVars().stream();
     }
 
@@ -58,7 +99,7 @@ public class Csp {
         return streamVars().map(Variable::cloneDomain).toArray(Domain[]::new);
     }
 
-    Stream<Constraint> streamConstraints() {
+    private Stream<Constraint> streamConstraints() {
         return getConstraints().stream();
     }
 
@@ -66,8 +107,22 @@ public class Csp {
         return streamConstraints().allMatch(Constraint::isSatisfied);
     }
 
-    public Stream<Constraint> getRelatedConstraints(Variable var) {
-        return relatedConstraints.get(var).stream();
+    Set<Constraint> getRelatedConstraints(Variable var) {
+        try {
+            Set<Constraint> constraints = relatedConstraints.get(var);
+            constraints.isEmpty();
+            return constraints;
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Variable of index".concat(" " + var.getInd()).concat(" is not in Csp"));
+        }
+    }
+
+    public Stream<Constraint> streamRelatedConstraints(Variable var) {
+        return getRelatedConstraints(var).stream();
+    }
+
+    public Solution solution() {
+        return new Solution(streamVars());
     }
 
     public String toString() {
@@ -76,33 +131,5 @@ public class Csp {
         s.append("---Contraintes \n");
         streamConstraints().forEach(c -> s.append(c).append("\n"));
         return s.toString();
-    }
-
-    public Solution solution() {
-        return new Solution(streamVars());
-    }
-
-    public void addOneVariable(int minD, int maxD) {
-        Variable var = oneVariable(vars.size(), minD, maxD);
-        vars.add(var);
-        relatedConstraints.put(var, new HashSet<>());
-    }
-
-    public void addVariables(int nbVars, int minD, int maxD) {
-        range(0, nbVars).forEach(i -> this.addOneVariable(minD, maxD));
-    }
-
-    public void addBinaryConstraint(String s) {
-        try {
-            String[] split = s.split(" ");
-            Variable v1 = vars.get(split[0].charAt(1) - 48);
-            Variable v2 = vars.get(split[2].charAt(1) - 48);
-            Constraint constraint = binaryConstraint(v1, split[1], v2);
-            cons.add(constraint);
-            relatedConstraints.get(v1).add(constraint);
-            relatedConstraints.get(v2).add(constraint);
-        } catch (PatternSyntaxException e) {
-            throw new IllegalArgumentException("Binary constrant definition should match x[0-9]+ ?(<|>|!)?=? ?x[0-9]+");
-        }
     }
 }

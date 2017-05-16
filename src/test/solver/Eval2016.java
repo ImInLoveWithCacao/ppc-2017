@@ -57,8 +57,14 @@ class Eval2016 {
         assertQuestion22(10000);
     }
 
+    @Test
     void question_2_2_n_egal_100000() {
         assertQuestion22(100000);
+    }
+
+    @Test
+    void question_2_2_n_egal_1000000() {
+        assertQuestion22(1000000);
     }
 
 }

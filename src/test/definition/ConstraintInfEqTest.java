@@ -11,7 +11,7 @@ import static definition.factories.ConstraintFactory.INF_EQ;
 import static definition.factories.VariableFactory.*;
 import static solver.TestUtils.domainsToString;
 
-class ConstraintInfEgTest {
+class ConstraintInfEqTest {
 
     private static void assertDomainsAfterFilterEqual(String expected, Variable[]... actual) {
         TestUtils.assertDomainsAfterFilterEqual(INF_EQ, expected, actual);

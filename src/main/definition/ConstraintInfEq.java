@@ -2,9 +2,9 @@ package definition;
 
 import static definition.factories.ConstraintFactory.INF_EQ;
 
-public class ConstraintInfEg extends BinaryConstraint {
+public class ConstraintInfEq extends BinaryConstraint {
 
-    public ConstraintInfEg(Variable v1, Variable v2) {
+    public ConstraintInfEq(Variable v1, Variable v2) {
         super(new Variable[]{v1, v2}, INF_EQ);
     }
 

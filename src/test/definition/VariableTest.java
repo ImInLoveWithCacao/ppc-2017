@@ -16,9 +16,9 @@ class VariableTest {
     void equals() {
         Variable[] vars = VariableFactory.createVariables(2, 0, 2);
         Variable v0 = vars[0];
-        Variable v2 = VariableFactory.oneVariable(2, 0, 1);
-        boolean[] actual = {v0.equals(vars[1]), v2.equals(v0)};
-        boolean[] expected = {true, false};
+        Variable v01 = VariableFactory.oneVariable(0, 0, 2);
+        boolean[] actual = {v0.equals(vars[1]), v01.equals(v0)};
+        boolean[] expected = {false, true};
         assertArrayEquals(expected, actual);
     }
 }

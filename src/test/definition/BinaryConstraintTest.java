@@ -4,10 +4,21 @@ import org.junit.jupiter.api.Test;
 
 import static definition.factories.ConstraintFactory.*;
 import static definition.factories.VariableFactory.oneVariable;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BinaryConstraintTest {
+    @Test
+    void factory_test() {
+        Variable v1 = oneVariable(0, 0, 2);
+        Variable v2 = oneVariable(1, 1, 3);
+        Constraint diff = binaryConstraint(v1, DIFF, v2);
+        assertTrue(diff instanceof ConstraintDiff);
+        Constraint inf = binaryConstraint(v1, INF, v2);
+        assertTrue(inf instanceof ConstraintInf);
+        Constraint infEq = binaryConstraint(v1, INF_EQ, v2);
+        assertTrue(infEq instanceof ConstraintInfEq);
+    }
+
     @Test
     void same_constraints_should_have_same_hash() {
         Variable v1 = oneVariable(0, 0, 2);

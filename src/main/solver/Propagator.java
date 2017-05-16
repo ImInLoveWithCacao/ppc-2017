@@ -75,7 +75,7 @@ class Propagator {
      * S'arrête si un filtrage vide un domaine.
      */
     void propagate() {
-        csp.getRelatedConstraints(currentNode).forEach(activeConstraints::add);
+        csp.streamRelatedConstraints(currentNode).forEach(activeConstraints::add);
 
         while (canStillPropagate()) {
             try {
@@ -112,7 +112,7 @@ class Propagator {
     }
 
     private void addActivatedConstraints(Variable modifiedVariable) {
-        csp.getRelatedConstraints(modifiedVariable)
+        csp.streamRelatedConstraints(modifiedVariable)
             .filter(this::isNotActiveYet)
             .forEach(activeConstraints::add);
     }

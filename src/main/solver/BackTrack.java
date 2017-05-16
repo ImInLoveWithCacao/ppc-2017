@@ -13,6 +13,6 @@ public class BackTrack extends BruteForce {
      */
     @Override
     protected boolean isNodeConsistent() {
-        return csp.getRelatedConstraints(currentNode).allMatch(Constraint::isNecessary);
+        return csp.streamRelatedConstraints(currentNode).allMatch(Constraint::isNecessary);
     }
 }

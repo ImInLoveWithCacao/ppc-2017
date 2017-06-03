@@ -74,7 +74,7 @@ public class Csp {
         }
     }
 
-    void addConstraints(Constraint... constraints) {
+    public void addConstraints(Constraint... constraints) {
         for (Constraint constraint : constraints) {
             cons.add(constraint);
             constraint.streamVars()

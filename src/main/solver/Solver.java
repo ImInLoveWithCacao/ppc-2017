@@ -7,11 +7,11 @@ import definition.Variable;
 import tools.SearchResult;
 
 public abstract class Solver {
-    static final int BRUTEFORCE = 0;
-    static final int BACKTRACK = 1;
-    static final int WITHFILTER = 2;
-    static final int SMALLESTDOMAINS = 3;
-    static final int SMALLESTRATIO = 4;
+    public static final int BRUTEFORCE = 0;
+    public static final int BACKTRACK = 1;
+    public static final int WITHFILTER = 2;
+    public static final int SMALLESTDOMAINS = 3;
+    public static final int SMALLESTRATIO = 4;
 
     Csp csp;
     Variable currentNode;
@@ -24,17 +24,18 @@ public abstract class Solver {
     Solver(String name, Csp csp) {
         this.csp = csp;
         this.result = new SearchResult(name);
+        result.timerStart();
     }
 
-    static Solver createSolver(int type, String name, Variable[] vars) {
+    public static Solver createSolver(int type, String name, Variable[] vars) {
         return createSolver(type, name, vars, new Constraint[]{});
     }
 
-    static Solver createSolver(int type, String name, Variable[] vars, Constraint... cons) {
+    public static Solver createSolver(int type, String name, Variable[] vars, Constraint... cons) {
         return createSolver(type, name, new Csp(vars, cons));
     }
 
-    static Solver createSolver(int type, String name, Csp csp) {
+    public static Solver createSolver(int type, String name, Csp csp) {
         switch (type) {
             case SMALLESTRATIO:
                 return new SmallestRatio(name, csp);
@@ -55,8 +56,7 @@ public abstract class Solver {
      * Lance la recherche
      * @return Un object contentant les données relatives à la recherche (temps d'execution, resultats, etc).
      */
-    SearchResult solve() {
-        result.timerStart();
+    public SearchResult solve() {
         search();
         result.timerEnd();
         return result;
@@ -94,8 +94,6 @@ public abstract class Solver {
         coreSearch();
     }
 
-    abstract void coreSearch();
-
     /**
      * Instancie la variable à la valeur value, sauvegarde la visite d'un nouveau noeud,
      * puis modifie this.currentNode.
@@ -105,4 +103,11 @@ public abstract class Solver {
         result.addNode();
         currentNode = var;
     }
+
+    void coreSearch() {
+        if (isNodeConsistent())
+            search();
+    }
+
+    protected abstract boolean isNodeConsistent();
 }

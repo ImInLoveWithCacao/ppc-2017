@@ -10,8 +10,9 @@ public class BruteForce extends Solver {
     }
 
     /**
-     * Vérifie que les conditions décessaires aux contraintes sont satisfaite pour ce noeud et pour ce type de solver.
+     * Vérifie que les conditions nécessaires aux contraintes sont satisfaite pour ce noeud et pour ce type de solver.
      */
+    @Override
     protected boolean isNodeConsistent() {
         return true;
     }
@@ -22,11 +23,5 @@ public class BruteForce extends Solver {
     @Override
     protected Variable choseNextVar() {
         return csp.streamUninstantiated().findFirst().orElse(null);
-    }
-
-    @Override
-    void coreSearch() {
-        if (isNodeConsistent())
-            search();
     }
 }
